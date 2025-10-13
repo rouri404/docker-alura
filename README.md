@@ -28,5 +28,6 @@ docker container ls -a                  # Mostra todos os containers, inclusive 
 > *Nota: Ao executarmos o comando docker run --help, observamos que ao especificar a imagem, podemos enviar um comando para que esse container execute.*
 
 ```bash
-Usage: docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+docker run --help
+> Usage: docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 ```

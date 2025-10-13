@@ -1,4 +1,5 @@
-## Repositório de estudo do curso [`Docker: criando e gerenciando containers`](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
+## Repositório de estudo do curso
+[`Docker: criando e gerenciando containers`](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
 
 ### Instalar Docker no Arch Linux e derivados
 

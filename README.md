@@ -1,5 +1,4 @@
-## Repositório de estudo do curso
-[`Docker: criando e gerenciando containers`](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
+## Repositório do Curso: [`Docker: criando e gerenciando containers`](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
 
 ### Instalar Docker no Arch Linux e derivados
 
@@ -11,3 +10,4 @@ sudo systemctl enable docker.service    # Habilita o Docker para iniciar com o s
 sudo usermod -aG docker $USER           # Adiciona seu usuário ao grupo do Docker.
 sudo docker run hello-world             # Verifica se a instalação foi bem-sucedida.
 ```
+> *Nota: Caso use outra distribuição, como `Ubuntu/Debian` ou `Fedora` recomendo ver na [documentação oficial do Docker](https://docs.docker.com/engine/install/).*

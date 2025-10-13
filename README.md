@@ -1,6 +1,6 @@
-## Repositório do Curso: [`Docker: criando e gerenciando containers`](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
+### Repositório do Curso: [`Docker: criando e gerenciando containers`](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
 
-### Instalar Docker no Arch Linux e derivados
+#### Instalar Docker no Arch Linux e derivados
 
 ```bash
 sudo pacman -Syu                        # Atualiza o sistema.

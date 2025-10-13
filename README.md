@@ -1,4 +1,6 @@
-### Repositório do Curso: [`Docker: criando e gerenciando containers`](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
+### [`Docker: criando e gerenciando containers`](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
+
+Repositório criado para fins de estudo sobre Docker, curso realizado na plataforma *Alura*.
 
 ---
 
@@ -13,3 +15,18 @@ sudo usermod -aG docker $USER           # Adiciona seu usuário ao grupo do Dock
 sudo docker run hello-world             # Verifica se a instalação foi bem-sucedida.
 ```
 > *Nota: Caso use outra distribuição, como `Ubuntu/Debian` ou `Fedora` recomendo ver na [documentação oficial do Docker](https://docs.docker.com/engine/install/).*
+
+---
+
+#### Comandos relavates
+
+```bash
+docker ps                               # Mostra quais containers estão em execução no momento.
+docker container ls                     # Exatamente a mesma coisa da anterior, só que mais verboso.
+docker container ls -a                  # Mostra todos os containers, inclusive os que já não estão mais em execução.
+```
+> *Nota: Ao executarmos o comando docker run --help, observamos que ao especificar a imagem, podemos enviar um comando para que esse container execute.*
+
+```bash
+Usage: docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+```

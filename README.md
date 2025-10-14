@@ -128,3 +128,59 @@ docker run -it ubuntu bash                # Cria e acessa diretamente o terminal
 - Arquivos criados dentro de um *container* não aparecem no sistema host
 - Cada *container* possui seu próprio namespace dos processos
 - Modificações em um *container* não afetam outros containers ou o host
+
+---
+
+#### Executando containers em background
+
+Para executar containers sem travar o terminal, utilizamos a flag `-d` (detached):
+
+```bash
+docker run -d ubuntu sleep 1d              # Executa em background
+docker run -d <IMAGEM>                     # Executa qualquer imagem em background
+```
+
+**Vantagens do modo detached:**
+- Terminal permanece disponível para outros comandos
+- Container continua executando em segundo plano
+- Ideal para aplicações que precisam ficar rodando
+
+---
+
+#### Mapeamento de portas
+
+Por padrão, containers ficam isolados da rede do host. Para acessar aplicações web, é necessário mapear portas.
+
+**Mapeamento automático (flag -P):**
+```bash
+docker run -d -P dockersamples/static-site            # Mapeia automaticamente para portas aleatórias
+docker port <CONTAINER_ID>                            # Mostra o mapeamento de portas
+```
+
+**Mapeamento específico (flag -p):**
+```bash
+docker run -d -p 8080:80 dockersamples/static-site    # Host:Container
+docker run -d -p 3000:3000 <IMAGEM>                   # Mesma porta host e container
+docker run -d -p 80:80 -p 443:443 <IMAGEM>            # Múltiplas portas
+```
+
+**Exemplo prático com aplicação web:**
+```bash
+# Executa aplicação web em background
+docker run -d -p 8080:80 dockersamples/static-site
+
+# Acessa no navegador
+# http://localhost:8080
+```
+
+**Comandos úteis para gerenciar portas:**
+```bash
+docker ps                                             # Mostra mapeamento de portas na coluna PORTS
+docker port <CONTAINER_ID>                            # Lista todas as portas mapeadas
+docker rm -f <CONTAINER_ID>                           # Remove container forçadamente (stop + rm)
+```
+
+**Diferenças importantes:**
+- `-P`: Mapeia automaticamente para portas aleatórias (ex: 49154->80)
+- `-p`: Permite especificar exatamente qual porta do host mapear
+- Sem mapeamento: Container fica inacessível externamente

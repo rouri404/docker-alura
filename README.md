@@ -4,6 +4,25 @@ Repositório criado para fins de estudo sobre Docker, curso realizado na platafo
 
 ---
 
+#### Conceitos fundamentais
+
+**Docker Hub:**
+- Repositório central de imagens Docker
+- Milhares de imagens oficiais e da comunidade
+- Fonte principal para baixar e compartilhar imagens
+
+**Imagens vs Containers:**
+- **Imagens**: Templates estáticos que definem o ambiente
+- **Containers**: Instâncias em execução baseadas em imagens
+- Uma imagem pode gerar múltiplos containers
+
+**Isolamento de containers:**
+- Cada container possui seu próprio sistema de arquivos
+- Namespaces isolam processos, rede e recursos
+- Modificações em um container não afetam o host ou outros containers
+
+---
+
 #### Instalar Docker no Arch Linux e derivados
 
 ```bash
@@ -18,7 +37,41 @@ sudo docker run hello-world             # Verifica se a instalação foi bem-suc
 
 ---
 
-#### Comandos relavates
+#### Ciclo de vida dos containers
+
+**Comandos essenciais para gerenciar containers:**
+
+```bash
+# Criar e executar containers
+docker run <IMAGEM>                        # Cria e executa um novo container
+docker run -d <IMAGEM>                     # Executa em background (detached)
+docker run -it <IMAGEM> bash               # Executa em modo interativo
+
+# Gerenciar estado dos containers
+docker start <CONTAINER_ID>                # Inicia um container parado
+docker stop <CONTAINER_ID>                 # Para um container em execução
+docker stop -t=0 <CONTAINER_ID>            # Para instantaneamente
+docker pause <CONTAINER_ID>                # Pausa um container (preserva estado)
+docker unpause <CONTAINER_ID>              # Despausa um container pausado
+
+# Interagir com containers em execução
+docker exec -it <CONTAINER_ID> bash        # Acessa terminal do container
+docker exec <CONTAINER_ID> <COMANDO>       # Executa comando no container
+
+# Remover containers
+docker rm <CONTAINER_ID>                   # Remove container parado
+docker rm -f <CONTAINER_ID>                # Remove container forçadamente
+```
+
+**Estados dos containers:**
+- **Running**: Container em execução
+- **Paused**: Container pausado (processos congelados)
+- **Stopped**: Container parado (processos finalizados)
+- **Created**: Container criado mas não iniciado
+
+---
+
+#### Comandos relevantes
 
 ```bash
 docker ps                               # Mostra quais containers estão em execução no momento.
@@ -149,13 +202,19 @@ docker run -d <IMAGEM>                     # Executa qualquer imagem em backgrou
 
 #### Mapeamento de portas
 
-Por padrão, containers ficam isolados da rede do host. Para acessar aplicações web, é necessário mapear portas.
+Por padrão, containers ficam isolados da rede do host. Para acessar aplicações web, é necessário mapear portas do container para o host.
+
+**Conceito fundamental:**
+- Containers possuem suas próprias interfaces de rede
+- Portas internas do container não são acessíveis externamente
+- Mapeamento permite acesso externo às aplicações
 
 **Mapeamento automático (flag -P):**
 ```bash
 docker run -d -P dockersamples/static-site            # Mapeia automaticamente para portas aleatórias
 docker port <CONTAINER_ID>                            # Mostra o mapeamento de portas
 ```
+*Resultado: `0.0.0.0:49154->80/tcp` (porta 80 do container → porta 49154 do host)*
 
 **Mapeamento específico (flag -p):**
 ```bash
@@ -164,23 +223,54 @@ docker run -d -p 3000:3000 <IMAGEM>                   # Mesma porta host e conta
 docker run -d -p 80:80 -p 443:443 <IMAGEM>            # Múltiplas portas
 ```
 
-**Exemplo prático com aplicação web:**
+**Exemplo prático completo:**
 ```bash
-# Executa aplicação web em background
+# 1. Executa aplicação web em background
 docker run -d -p 8080:80 dockersamples/static-site
 
-# Acessa no navegador
+# 2. Verifica se está rodando
+docker ps
+
+# 3. Acessa no navegador
 # http://localhost:8080
+
+# 4. Remove quando não precisar mais
+docker rm -f <CONTAINER_ID>
 ```
 
 **Comandos úteis para gerenciar portas:**
 ```bash
-docker ps                                             # Mostra mapeamento de portas na coluna PORTS
+docker ps                                             # Mostra mapeamento na coluna PORTS
 docker port <CONTAINER_ID>                            # Lista todas as portas mapeadas
-docker rm -f <CONTAINER_ID>                           # Remove container forçadamente (stop + rm)
+docker logs <CONTAINER_ID>                            # Visualiza logs da aplicação
 ```
 
-**Diferenças importantes:**
-- `-P`: Mapeia automaticamente para portas aleatórias (ex: 49154->80)
-- `-p`: Permite especificar exatamente qual porta do host mapear
-- Sem mapeamento: Container fica inacessível externamente
+**Comparação das flags:**
+- `-P`: Mapeamento automático para portas aleatórias (ex: 49154->80)
+- `-p`: Controle total sobre mapeamento (ex: 8080:80)
+- Sem flag: Container inacessível externamente
+
+---
+
+#### Resumo dos conceitos principais
+
+**Docker Hub:**
+- Repositório central de imagens Docker
+- Fonte principal para baixar imagens oficiais e da comunidade
+
+**Ciclo de vida dos containers:**
+- `docker start`: Inicia container parado
+- `docker stop`: Para container em execução
+- `docker pause`: Pausa container (preserva estado)
+- `docker unpause`: Despausa container pausado
+- `docker rm`: Remove container
+
+**Mapeamento de portas:**
+- `-P`: Mapeamento automático para portas aleatórias
+- `-p`: Mapeamento específico (host:container)
+- Essencial para acessar aplicações web externamente
+
+**Isolamento:**
+- Containers são completamente isolados do host
+- Cada container possui seu próprio sistema de arquivos
+- Modificações não afetam o host ou outros containers

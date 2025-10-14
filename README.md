@@ -126,5 +126,5 @@ docker run -it ubuntu bash                # Cria e acessa diretamente o terminal
 
 **Isolamento de containers:**
 - Arquivos criados dentro de um *container* não aparecem no sistema host
-- Cada *container* possui seu próprio namespace de processos
+- Cada *container* possui seu próprio namespace dos processos
 - Modificações em um *container* não afetam outros containers ou o host

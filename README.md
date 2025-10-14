@@ -48,6 +48,6 @@ docker ps -a
 ```
 
 ```bash
-docker stop a1b2c3c4d5e6                # Aqui foi interrompida a partir do ID
-docker stop hello_name                  # Aqui foi interrompida a partir do nome
+docker stop a1b2c3c4d5e6                 # Aqui foi interrompida a partir do ID
+docker stop hello_name                   # Aqui foi interrompida a partir do nome
 ```

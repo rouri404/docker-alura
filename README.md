@@ -1,12 +1,16 @@
+<center>
+
 ### [`Docker: criando e gerenciando containers`](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
 
-Repositório criado para fins de estudo sobre Docker, curso realizado na plataforma *Alura*.
+</center>
+
+Repositório criado para fins de estudo sobre ***Docker***, curso realizado na plataforma *Alura*.
 
 ---
 
 #### Conceitos fundamentais
 
-**Docker Hub:**
+**[Docker Hub](https://hub.docker.com/):**
 - Repositório central de imagens Docker
 - Milhares de imagens oficiais e da comunidade
 - Fonte principal para baixar e compartilhar imagens
@@ -23,6 +27,51 @@ Repositório criado para fins de estudo sobre Docker, curso realizado na platafo
 
 ---
 
+#### Gerenciando imagens *Docker*
+
+**O que são imagens:**
+- Conjunto de camadas empilhadas que formam um template
+- Cada camada possui um ID único e é independente
+- Imagens são imutáveis (read-only) após criação
+- Base para criar containers
+
+**Comandos essenciais para imagens:**
+```bash
+docker images                                # Lista todas as imagens baixadas
+docker image ls                              # Comando alternativo
+docker pull <IMAGEM>                         # Baixa uma imagem específica
+docker inspect <IMAGE_ID>                    # Mostra informações detalhadas
+docker history <IMAGE_ID>                    # Mostra as camadas da imagem
+docker rmi <IMAGE_ID>                        # Remove uma imagem
+```
+
+**Exemplo prático:**
+```bash
+docker pull ubuntu                           # Baixa a imagem Ubuntu
+docker images                                # Verifica imagens disponíveis
+docker history ubuntu                        # Mostra camadas da imagem
+```
+
+**Estrutura de uma imagem:**
+- **Camadas**: Cada comando no Dockerfile gera uma camada
+- **Reutilização**: Camadas são compartilhadas entre imagens
+- **Eficiência**: Docker baixa apenas camadas que não existem
+- **Tamanho**: Mostrado na coluna SIZE do comando `docker images`
+
+**Como imagens viram containers:**
+- Container = Imagem + Camada de escrita (read-write)
+- Camada adicional é temporária e leve
+- Múltiplos containers podem usar a mesma imagem
+- Dados são perdidos quando container é removido
+
+**Por que containers são leves:**
+- Reutilizam camadas da imagem base
+- Apenas uma camada fina de escrita é adicionada
+- Compartilhamento de recursos entre containers
+- Otimização de espaço e performance
+
+---
+
 #### Instalar Docker no Arch Linux e derivados
 
 ```bash
@@ -33,7 +82,7 @@ sudo systemctl enable docker.service    # Habilita o Docker para iniciar com o s
 sudo usermod -aG docker $USER           # Adiciona seu usuário ao grupo do Docker (necessário reiniciar a máquina para validar).
 sudo docker run hello-world             # Verifica se a instalação foi bem-sucedida.
 ```
-> *Nota: Caso use outra distribuição, como `Ubuntu/Debian` ou `Fedora` recomendo ver na [documentação oficial do Docker](https://docs.docker.com/engine/install/).*
+> *Nota: Caso use outra distribuição, como `Ubuntu`, `Debian` ou `Fedora`, recomendo ver na [documentação oficial do *Docker*](https://docs.docker.com/engine/install/).*
 
 ---
 

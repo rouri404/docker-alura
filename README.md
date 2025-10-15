@@ -303,7 +303,7 @@ docker logs <CONTAINER_ID>                            # Visualiza logs da aplica
 
 #### Resumo dos conceitos principais
 
-**Docker Hub:**
+**[Docker Hub](https://hub.docker.com/):**
 - Repositório central de imagens Docker
 - Fonte principal para baixar imagens oficiais e da comunidade
 

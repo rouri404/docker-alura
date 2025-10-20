@@ -337,23 +337,23 @@ ENTRYPOINT npm start            # Define comando executado quando container inic
 docker build -t nome-usuario/nome-app:versao .
 
 # Exemplo prático
-docker build -t gabrielcouto/app-node:1.0 .
+docker build -t gabricoto/app-node:1.0 .
 
 # Criando versões diferentes
-docker build -t gabrielcouto/app-node:1.1 .    # Com EXPOSE
-docker build -t gabrielcouto/app-node:1.2 .    # Com variáveis de ambiente
+docker build -t gabricoto/app-node:1.1 .    # Com EXPOSE
+docker build -t gabricoto/app-node:1.2 .    # Com variáveis de ambiente
 ```
 
 **Executando container da imagem criada:**
 ```bash
 # Executar em background com mapeamento de porta
-docker run -d -p 8081:3000 gabrielcouto/app-node:1.0
+docker run -d -p 8081:3000 gabricoto/app-node:1.0
 
 # Executar sem mapeamento (apenas documentação da porta)
-docker run -d gabrielcouto/app-node:1.1
+docker run -d gabricoto/app-node:1.1
 
 # Executar com porta customizada
-docker run -d -p 9090:6000 gabrielcouto/app-node:1.2
+docker run -d -p 9090:6000 gabricoto/app-node:1.2
 
 # Verificar se está funcionando
 docker ps
@@ -401,6 +401,83 @@ meu-projeto/
 ├── package.json
 ├── index.js
 └── outros arquivos...
+```
+
+---
+
+#### Enviando imagens para o Docker Hub
+
+**Preparação:**
+1. Criar conta no [Docker Hub](https://hub.docker.com/)
+2. Fazer login via terminal
+3. Criar tag com seu nome de usuário
+4. Fazer push da imagem
+
+**Autenticação no terminal:**
+```bash
+docker login -u seu-usuario-dockerhub
+# Digite sua senha quando solicitado
+```
+
+**Criando tags para Docker Hub:**
+```bash
+# Copiar imagem local para tag do Docker Hub
+docker tag gabricoto/app-node:1.0 seu-usuario/app-node:1.0
+
+# Exemplo prático
+docker tag gabricoto/app-node:1.0 aluradocker/app-node:1.0
+docker tag gabricoto/app-node:1.2 aluradocker/app-node:1.2
+```
+
+**Enviando imagens:**
+```bash
+# Push de uma versão específica
+docker push aluradocker/app-node:1.0
+
+# Push de múltiplas versões
+docker push aluradocker/app-node:1.2
+```
+
+**Comandos úteis:**
+```bash
+docker images                   # Verificar imagens locais
+docker tag <origem> <destino>   # Criar nova tag da imagem
+docker push <repositorio:tag>   # Enviar para Docker Hub
+```
+
+**Conceitos importantes:**
+
+**Nomenclatura no Docker Hub:**
+- Formato: `usuario-ou-organizacao/nome-da-imagem:tag`
+- Só é possível fazer push para repositórios do seu usuário
+- Exemplo: `gabricoto/app-node:1.0`
+
+**Otimização de camadas:**
+- Docker Hub reutiliza camadas já existentes
+- Apenas camadas modificadas são enviadas
+- Reduz tempo de upload e espaço de armazenamento
+
+**Versionamento:**
+- Use tags semânticas (1.0, 1.1, 1.2, latest)
+- Diferentes versões podem coexistir no mesmo repositório
+- Facilita controle de versões e rollbacks
+
+**Fluxo completo de exemplo:**
+```bash
+# 1. Construir imagem
+docker build -t gabricoto/app-node:1.0 .
+
+# 2. Testar localmente
+docker run -d -p 8080:3000 gabricoto/app-node:1.0
+
+# 3. Fazer login no Docker Hub
+docker login -u gabricoto
+
+# 4. Criar tag para Docker Hub (se necessário)
+docker tag gabricoto/app-node:1.0 gabricoto/app-node:1.0
+
+# 5. Enviar para Docker Hub
+docker push gabricoto/app-node:1.0
 ```
 
 ---

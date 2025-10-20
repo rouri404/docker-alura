@@ -416,7 +416,7 @@ meu-projeto/
 - `docker stop`: Para container em execução
 - `docker pause`: Pausa container (preserva estado)
 - `docker unpause`: Despausa container pausado
-- `docker rm`: Remove container
+- `docker rm`: Remove o container
 
 **Mapeamento de portas:**
 - `-P`: Mapeamento automático para portas aleatórias

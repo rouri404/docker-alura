@@ -313,6 +313,9 @@ docker logs <CONTAINER_ID>                            # Visualiza logs da aplica
 ```dockerfile
 FROM node:14                    # Define imagem base
 WORKDIR /app-node               # Define diretório de trabalho
+ARG PORT_BUILD=6000             # Variável para construção da imagem
+ENV PORT=$PORT_BUILD            # Variável de ambiente para o container
+EXPOSE $PORT_BUILD              # Documenta porta exposta
 COPY . .                        # Copia arquivos do host para a imagem
 RUN npm install                 # Executa comandos durante a criação da imagem
 ENTRYPOINT npm start            # Define comando executado quando container iniciar
@@ -321,6 +324,9 @@ ENTRYPOINT npm start            # Define comando executado quando container inic
 **Instruções do Dockerfile:**
 - `FROM`: Define a imagem base (ex: `FROM node:14`)
 - `WORKDIR`: Define o diretório de trabalho padrão
+- `ARG`: Define variável usada apenas durante a construção da imagem
+- `ENV`: Define variável de ambiente disponível dentro do container
+- `EXPOSE`: Documenta qual porta a aplicação usa (não mapeia automaticamente)
 - `COPY`: Copia arquivos/diretórios do host para a imagem
 - `RUN`: Executa comandos durante a construção da imagem
 - `ENTRYPOINT`: Define o comando executado quando o container iniciar
@@ -331,13 +337,23 @@ ENTRYPOINT npm start            # Define comando executado quando container inic
 docker build -t nome-usuario/nome-app:versao .
 
 # Exemplo prático
-docker build -t danielartini/app-node:1.0 .
+docker build -t gabrielcouto/app-node:1.0 .
+
+# Criando versões diferentes
+docker build -t gabrielcouto/app-node:1.1 .    # Com EXPOSE
+docker build -t gabrielcouto/app-node:1.2 .    # Com variáveis de ambiente
 ```
 
 **Executando container da imagem criada:**
 ```bash
 # Executar em background com mapeamento de porta
-docker run -d -p 8081:3000 danielartini/app-node:1.0
+docker run -d -p 8081:3000 gabrielcouto/app-node:1.0
+
+# Executar sem mapeamento (apenas documentação da porta)
+docker run -d gabrielcouto/app-node:1.1
+
+# Executar com porta customizada
+docker run -d -p 9090:6000 gabrielcouto/app-node:1.2
 
 # Verificar se está funcionando
 docker ps
@@ -348,6 +364,28 @@ docker ps
 docker images                   # Lista imagens criadas
 docker history <IMAGE_ID>       # Mostra camadas da imagem
 docker inspect <IMAGE_ID>       # Informações detalhadas da imagem
+docker stop $(docker container ls -q)  # Para todos os containers em execução
+```
+
+**Conceitos avançados:**
+
+**Documentando portas com EXPOSE:**
+- `EXPOSE 3000`: Documenta que a aplicação usa a porta 3000
+- Não faz mapeamento automático, apenas documenta
+- Aparece na coluna PORTS do `docker ps`
+- Facilita para outros desenvolvedores saberem qual porta mapear
+
+**Variáveis de ambiente:**
+- `ARG`: Usada apenas durante a construção da imagem (build time)
+- `ENV`: Disponível dentro do container em execução (runtime)
+- Permite parametrização e configuração flexível
+
+**Exemplo de aplicação Node.js com porta variável:**
+```javascript
+// index.js
+app.listen(process.env.PORT, ()=>{
+    console.log(`Server is listening on port ${process.env.PORT}`)
+})
 ```
 
 **Vantagens de criar suas próprias imagens:**

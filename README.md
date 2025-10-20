@@ -301,6 +301,72 @@ docker logs <CONTAINER_ID>                            # Visualiza logs da aplica
 
 ---
 
+#### Criando suas próprias imagens Docker
+
+**Fluxo de criação:**
+1. Definir um arquivo `Dockerfile`
+2. Criar a imagem a partir do `Dockerfile`
+3. Executar um container com `docker run`
+
+**Dockerfile - Instruções principais:**
+
+```dockerfile
+FROM node:14                    # Define imagem base
+WORKDIR /app-node               # Define diretório de trabalho
+COPY . .                        # Copia arquivos do host para a imagem
+RUN npm install                 # Executa comandos durante a criação da imagem
+ENTRYPOINT npm start            # Define comando executado quando container iniciar
+```
+
+**Instruções do Dockerfile:**
+- `FROM`: Define a imagem base (ex: `FROM node:14`)
+- `WORKDIR`: Define o diretório de trabalho padrão
+- `COPY`: Copia arquivos/diretórios do host para a imagem
+- `RUN`: Executa comandos durante a construção da imagem
+- `ENTRYPOINT`: Define o comando executado quando o container iniciar
+
+**Criando uma imagem:**
+```bash
+# Criar imagem a partir do Dockerfile no diretório atual
+docker build -t nome-usuario/nome-app:versao .
+
+# Exemplo prático
+docker build -t danielartini/app-node:1.0 .
+```
+
+**Executando container da imagem criada:**
+```bash
+# Executar em background com mapeamento de porta
+docker run -d -p 8081:3000 danielartini/app-node:1.0
+
+# Verificar se está funcionando
+docker ps
+```
+
+**Comandos úteis para imagens:**
+```bash
+docker images                   # Lista imagens criadas
+docker history <IMAGE_ID>       # Mostra camadas da imagem
+docker inspect <IMAGE_ID>       # Informações detalhadas da imagem
+```
+
+**Vantagens de criar suas próprias imagens:**
+- Não depender totalmente de imagens de terceiros
+- Customizar ambiente específico para sua aplicação
+- Incluir dependências e configurações necessárias
+- Facilitar deploy e distribuição da aplicação
+
+**Exemplo de estrutura de projeto:**
+```
+meu-projeto/
+├── Dockerfile
+├── package.json
+├── index.js
+└── outros arquivos...
+```
+
+---
+
 #### Resumo dos conceitos principais
 
 **[Docker Hub](https://hub.docker.com/):**

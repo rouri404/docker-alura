@@ -482,6 +482,115 @@ docker push gabricoto/app-node:1.0
 
 ---
 
+#### Tamanho dos containers e persistência de dados
+
+**Limpeza completa do sistema:**
+```bash
+# Remover todos os containers (parados e em execução)
+docker container rm $(docker container ls -aq)
+
+# Remover todas as imagens
+docker rmi $(docker image ls -aq)
+
+# Forçar remoção se houver conflitos
+docker rmi $(docker image ls -aq) --force
+```
+
+**Verificando tamanho dos containers:**
+```bash
+docker ps -s                    # Mostra tamanho dos containers em execução
+docker container ls -s          # Comando alternativo
+```
+
+**Colunas de tamanho:**
+- **SIZE**: Tamanho da camada read-write (dados temporários do container)
+- **Virtual Size**: Tamanho da imagem + camada read-write
+
+**Como funciona o tamanho:**
+
+**Container recém-criado:**
+```bash
+docker run -it ubuntu bash
+docker ps -s
+# SIZE: 0B (virtual 72.8MB)
+# Apenas a imagem base, sem dados adicionais
+```
+
+**Container após modificações:**
+```bash
+# Dentro do container:
+apt-get update
+
+# Em outro terminal:
+docker ps -s
+# SIZE: 16.2MB (virtual 89MB)
+# Dados foram adicionados à camada read-write
+```
+
+**Estrutura das camadas:**
+```bash
+docker history ubuntu           # Mostra camadas da imagem
+```
+
+**Conceitos importantes:**
+
+**Camadas dos containers:**
+- **Imagem**: Camadas read-only empilhadas
+- **Container**: Imagem + camada read-write temporária
+- **Isolamento**: Cada container tem sua própria camada read-write
+- **Temporariedade**: Dados são perdidos quando container é removido
+
+**Problema da persistência:**
+- Dados criados dentro do container são temporários
+- Remoção do container = perda de dados
+- Novos containers começam "limpos"
+- Necessidade de soluções para persistir dados
+
+**Soluções para persistência de dados:**
+
+**1. Bind Mount:**
+- Vincula diretório do host ao container
+- Ponte entre sistema de arquivos do host e container
+- Dados ficam no host e sobrevivem à remoção do container
+
+**2. Volume:**
+- Gerenciado pelo Docker
+- Armazenamento otimizado para containers
+- Independente do ciclo de vida do container
+
+**3. tmpfs Mount:**
+- Armazenamento temporário na memória
+- Dados não persistem após reinicialização
+- Útil para dados sensíveis temporários
+
+**Exemplo prático de tamanhos:**
+```bash
+# Terminal 1: Criar container
+docker run -it ubuntu bash
+
+# Terminal 2: Verificar tamanho inicial
+docker ps -s
+# SIZE: 0B (virtual 72.8MB)
+
+# Terminal 1: Fazer modificações
+apt-get update
+echo "dados" > arquivo.txt
+
+# Terminal 2: Verificar novo tamanho
+docker ps -s
+# SIZE: ~32MB (virtual ~105MB)
+
+# Sair e criar novo container
+exit
+docker run -it ubuntu bash
+
+# Terminal 2: Verificar - novo container = tamanho zerado
+docker ps -s
+# SIZE: 0B (virtual 72.8MB)
+```
+
+---
+
 #### Resumo dos conceitos principais
 
 **[Docker Hub](https://hub.docker.com/):**

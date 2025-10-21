@@ -634,6 +634,107 @@ docker run -it \
 
 ---
 
+#### Volumes: armazenamento gerenciado pelo Docker
+
+**Por que usar volumes?**
+- Área gerenciada pelo Docker dentro do sistema de arquivos
+- Mais seguro que bind mounts (evita alterações indesejadas)
+- Recomendado para ambientes produtivos
+- Independente da estrutura de pastas do host
+
+**Comandos básicos de volumes:**
+```bash
+docker volume ls                    # Lista volumes existentes
+docker volume create meu-volume     # Cria um novo volume
+docker volume inspect meu-volume    # Inspeciona detalhes do volume
+docker volume prune                 # Remove volumes não utilizados
+docker volume rm meu-volume         # Remove volume específico
+```
+
+**Criando e usando volumes com -v:**
+```bash
+# 1. Criar o volume
+docker volume create meu-volume
+
+# 2. Usar o volume em um container
+docker run -it -v meu-volume:/app ubuntu bash
+
+# Dentro do container:
+cd /app
+touch um-arquivo-qualquer
+exit
+
+# 3. Testar persistência
+docker run -it -v meu-volume:/app ubuntu bash
+cd /app && ls  # arquivo continua lá!
+```
+
+**Usando volumes com --mount (recomendado):**
+```bash
+# Volume existente
+docker run -it --mount source=meu-volume,target=/app ubuntu bash
+
+# Volume será criado automaticamente se não existir
+docker run -it --mount source=meu-novo-volume,target=/app ubuntu bash
+```
+
+**Onde ficam os arquivos dos volumes:**
+- Localização: `/var/lib/docker/volumes/<nome-do-volume>/_data`
+- Acesso (como superusuário):
+```bash
+sudo su
+cd /var/lib/docker/volumes/meu-volume/_data
+ls  # seus arquivos estarão aqui
+```
+
+**Vantagens dos volumes vs bind mounts:**
+
+| Volumes | Bind Mounts |
+|---------|-------------|
+| Gerenciados pelo Docker | Dependem do filesystem do host |
+| Criados automaticamente | Requer caminhos específicos |
+| Comandos Docker para gestão | Gestão manual do host |
+| Mais seguros | Acesso direto ao sistema |
+| Recomendado para produção | Útil para desenvolvimento |
+
+**Comandos de gerenciamento:**
+```bash
+docker volume                       # Mostra todos os comandos disponíveis
+docker volume ls                    # Lista volumes
+docker volume inspect <nome>        # Detalhes do volume
+docker volume prune                 # Remove volumes órfãos
+docker volume rm <nome>             # Remove volume específico
+```
+
+**Exemplo prático completo:**
+```bash
+# 1. Verificar volumes existentes
+docker volume ls
+
+# 2. Criar aplicação com volume
+docker run -d --name app-com-volume \
+  --mount source=dados-app,target=/dados \
+  ubuntu sleep 1d
+
+# 3. Adicionar dados
+docker exec app-com-volume touch /dados/arquivo-importante.txt
+
+# 4. Remover container
+docker rm -f app-com-volume
+
+# 5. Criar novo container - dados persistem!
+docker run -it --mount source=dados-app,target=/dados ubuntu bash
+ls /dados  # arquivo-importante.txt ainda está lá
+```
+
+**Características importantes:**
+- **Criação automática**: Volumes são criados automaticamente se não existirem
+- **Portabilidade**: Funcionam igual em diferentes sistemas operacionais
+- **Performance**: Otimizados para containers
+- **Backup**: Mais fácil de fazer backup que bind mounts
+
+---
+
 #### Resumo dos conceitos principais
 
 **[Docker Hub](https://hub.docker.com/):**

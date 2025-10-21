@@ -438,6 +438,9 @@ docker push aluradocker/app-node:1.0
 docker push aluradocker/app-node:1.2
 ```
 
+> *Nota: Esse repositório está disponível no Docker Hub acessando por [aqui](https://hub.docker.com/r/gabricoto/app-node).*
+
+
 **Comandos úteis:**
 ```bash
 docker images                   # Verificar imagens locais

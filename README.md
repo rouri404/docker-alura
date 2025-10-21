@@ -233,9 +233,9 @@ docker run -it ubuntu bash                # Cria e acessa diretamente o terminal
 
 ---
 
-#### Executando containers em background
+#### Executando *containers* em background
 
-Para executar containers sem travar o terminal, utilizamos a flag `-d` (detached):
+Para executar *containers* sem travar o terminal, utilizamos a flag `-d` (detached):
 
 ```bash
 docker run -d ubuntu sleep 1d              # Executa em background

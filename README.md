@@ -591,6 +591,49 @@ docker ps -s
 
 ---
 
+#### Bind mounts: persistindo dados com diretórios do host
+
+**Limpeza inicial (opcional):**
+```bash
+# Remover todos os containers (forçado)
+docker rm $(docker container ps -aq) --force
+```
+
+**Criando um bind mount com -v:**
+```bash
+# Sintaxe: -v <caminho_no_host>:<caminho_no_container>
+mkdir -p ~/volume-docker
+
+docker run -it -v $HOME/volume-docker:/app ubuntu bash
+# Dentro do container
+cd /app
+ls
+touch arquivo-qualquer.txt
+```
+- Tudo que for criado em `/app` aparecerá no diretório `$HOME/volume-docker` do host.
+- Ao sair (`exit`) e criar um novo container com o mesmo `-v`, os arquivos continuam lá (persistência).
+
+**Criando um bind mount com --mount (recomendado):**
+```bash
+# Sintaxe: --mount type=bind,source=<host>,target=<container>
+docker run -it \
+  --mount type=bind,source=$HOME/volume-docker,target=/app \
+  ubuntu bash
+```
+- `--mount` é mais explícito/semântico.
+- Se o caminho no host não existir, o Docker acusa o erro (bom para evitar typos).
+
+**Comparação rápida:**
+- `-v host:container`: Atalho, menos verboso.
+- `--mount type=bind,source=...,target=...`: Mais claro, valida melhor os caminhos.
+
+**Boas práticas e cautelas:**
+- Garanta que o diretório do host exista e tenha permissões adequadas.
+- Evite acoplar sua imagem a caminhos específicos do host em produção.
+- Para reduzir acoplamento e aumentar portabilidade, prefira Volumes gerenciados pelo Docker (ver próxima seção).
+
+---
+
 #### Resumo dos conceitos principais
 
 **[Docker Hub](https://hub.docker.com/):**

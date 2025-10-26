@@ -1,37 +1,76 @@
 <div align="center">
 
-# [Docker: Criando e Gerenciando Containers](https://cursos.alura.com.br/course/docker-criando-gerenciando-containers/)
+# Docker: Criando e Gerenciando Containers
 
 [![Curso](https://img.shields.io/badge/Alura-Docker-blue)](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-Repositório criado para fins de estudo sobre **Docker**, curso realizado na plataforma **Alura**.
+**Guia completo de Docker: da instalação à orquestração com Docker Compose**
 
-[Documentação Oficial](https://docs.docker.com/) • [Docker Hub](https://hub.docker.com/)
+[Documentação Oficial](https://docs.docker.com/) • [Docker Hub](https://hub.docker.com/) • [Curso na Alura](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
 
 </div>
 
-## Índice
+---
 
-- [Conceitos fundamentais](#conceitos-fundamentais)
-- [Gerenciando imagens Docker](#gerenciando-imagens-docker)
-- [Instalação do Docker](#instalar-docker-no-arch-linux-e-derivados)
-- [Ciclo de vida dos containers](#ciclo-de-vida-dos-containers)
-- [Mapeamento de portas](#mapeamento-de-portas)
-- [Criando suas próprias imagens](#criando-suas-próprias-imagens-docker)
-- [Enviando imagens para o Docker Hub](#enviando-imagens-para-o-docker-hub)
-- [Persistência de dados](#tamanho-dos-containers-e-persistência-de-dados)
-  - [Bind Mounts](#bind-mounts-persistindo-dados-com-diretórios-do-host)
-  - [Volumes](#volumes-armazenamento-gerenciado-pelo-docker)
-  - [tmpfs](#tmpfs-armazenamento-temporário-em-memória)
-- [Resumo dos conceitos principais](#resumo-dos-conceitos-principais)
-- [Boas práticas gerais](#boas-práticas-gerais)
+## 📋 Sobre o Projeto
+
+Este repositório contém um guia completo e prático sobre **Docker**, desenvolvido durante o curso da **Alura**. O material abrange desde conceitos fundamentais até tópicos avançados como redes, volumes e Docker Compose.
+
+**O que você vai aprender:**
+- Conceitos fundamentais de containers e imagens
+- Gerenciamento completo do ciclo de vida de containers
+- Criação de imagens customizadas com Dockerfile
+- Persistência de dados com volumes e bind mounts
+- Comunicação entre containers usando redes Docker
+- Coordenação de múltiplos containers com Docker Compose
+
+**Pré-requisitos:**
+- Sistema operacional Linux, Windows ou macOS
+- Conhecimentos básicos de terminal/linha de comando
+- Docker instalado (guia de instalação incluído)
+
+---
+
+## 📋 Índice
+
+### 📘 Fundamentos
+- [Conceitos fundamentais](#-conceitos-fundamentais)
+- [Gerenciando imagens Docker](#-gerenciando-imagens-docker)
+- [Instalação do Docker](#-instalação-do-docker)
+
+### 🐳 Trabalhando com Containers
+- [Ciclo de vida dos containers](#-ciclo-de-vida-dos-containers)
+- [Mapeamento de portas](#-mapeamento-de-portas)
+
+### 📦 Imagens Customizadas
+- [Criando suas próprias imagens](#-criando-suas-próprias-imagens-docker)
+- [Enviando imagens para o Docker Hub](#-enviando-imagens-para-o-docker-hub)
+
+### 💾 Persistência de Dados
+- [Introdução à persistência](#-persistência-de-dados)
+- [Bind Mounts](#bind-mounts-persistindo-dados-com-diretórios-do-host)
+- [Volumes](#volumes-armazenamento-gerenciado-pelo-docker)
+- [tmpfs](#tmpfs-armazenamento-temporário-em-memória)
+
+### 🌐 Redes e Comunicação
+- [Redes Docker](#-redes-docker-comunicação-entre-containers)
+- [Exemplo prático: Aplicação + Banco](#comunicação-entre-containers-na-prática-aplicação--banco-de-dados)
+
+### 🐝 Docker Compose
+- [Introdução ao Docker Compose](#-docker-compose-coordenando-múltiplos-containers)
+- [Instalando o Docker Compose](#instalando-o-docker-compose)
+
+### 📚 Referência
+- [Resumo dos conceitos](#resumo-dos-conceitos-principais)
+- [Boas práticas](#boas-práticas-gerais)
 - [Referência rápida de comandos](#referência-rápida-de-comandos)
 - [Recursos adicionais](#recursos-adicionais)
 
 ---
 
-#### Conceitos fundamentais
+## 📖 Conceitos fundamentais
 
 **[Docker Hub](https://hub.docker.com/):**
 - Repositório central de imagens Docker
@@ -50,7 +89,7 @@ Repositório criado para fins de estudo sobre **Docker**, curso realizado na pla
 
 ---
 
-#### Gerenciando imagens *Docker*
+## 📊 Gerenciando imagens Docker
 
 **O que são imagens:**
 - Conjunto de camadas empilhadas que formam um template
@@ -95,7 +134,9 @@ docker history ubuntu                        # Mostra camadas da imagem
 
 ---
 
-#### Instalar Docker no Arch Linux e derivados
+## ⚙️ Instalação do Docker
+
+### Arch Linux e derivados
 
 ```bash
 sudo pacman -Syu                        # Atualiza o sistema.
@@ -109,7 +150,7 @@ sudo docker run hello-world             # Verifica se a instalação foi bem-suc
 
 ---
 
-#### Ciclo de vida dos containers
+## 🔄 Ciclo de vida dos containers
 
 **Comandos essenciais para gerenciar containers:**
 
@@ -162,7 +203,7 @@ docker start meu-container              # Inicia container pelo nome
 
 ---
 
-#### Mapeamento de portas
+## 🔌 Mapeamento de portas
 
 Por padrão, containers ficam isolados da rede do host. Para acessar aplicações web, é necessário mapear portas do container para o host.
 
@@ -214,7 +255,7 @@ docker logs <CONTAINER_ID>                            # Visualiza logs da aplica
 
 ---
 
-#### Criando suas próprias imagens Docker
+## 🛠️ Criando suas próprias imagens Docker
 
 **Fluxo de criação:**
 1. Definir um arquivo `Dockerfile`
@@ -318,7 +359,7 @@ meu-projeto/
 
 ---
 
-#### Enviando imagens para o Docker Hub
+## ☁️ Enviando imagens para o Docker Hub
 
 **Preparação:**
 1. Criar conta no [Docker Hub](https://hub.docker.com/)
@@ -397,7 +438,9 @@ docker push gabricoto/app-node:1.0
 
 ---
 
-#### Tamanho dos containers e persistência de dados
+## 💾 Persistência de dados
+
+### Tamanho dos containers
 
 **Comandos de limpeza do sistema:**
 ```bash
@@ -512,7 +555,7 @@ docker ps -s
 
 ---
 
-#### Bind mounts: persistindo dados com diretórios do host
+### Bind mounts: persistindo dados com diretórios do host
 
 **Criando um bind mount com -v:**
 ```bash
@@ -556,7 +599,7 @@ docker run -it \
 
 ---
 
-#### Volumes: armazenamento gerenciado pelo Docker
+### Volumes: armazenamento gerenciado pelo Docker
 
 **Por que usar volumes?**
 - Área gerenciada pelo Docker dentro do sistema de arquivos
@@ -657,7 +700,7 @@ ls /dados  # arquivo-importante.txt ainda está lá
 
 ---
 
-#### tmpfs: armazenamento temporário em memória
+### tmpfs: armazenamento temporário em memória
 
 **O que é tmpfs?**
 - Terceiro tipo de persistência disponível no Docker
@@ -753,7 +796,650 @@ ls /secrets  # vazio! senha não foi persistida (segurança)
 
 ---
 
-#### Resumo dos conceitos principais
+## 🌐 Redes Docker: comunicação entre containers
+
+**Por que redes são importantes?**
+- Containers são isolados por padrão através de namespaces
+- Sistemas complexos precisam de comunicação entre containers
+- Aplicações back-end precisam se conectar a bancos de dados
+- Microserviços precisam se comunicar entre si
+
+**Rede padrão: bridge**
+
+Quando criamos um container sem especificar rede, o Docker automaticamente o conecta à rede `bridge`:
+
+```bash
+# Criar container sem especificar rede
+docker run -it ubuntu bash
+
+# Em outro terminal, inspecionar o container
+docker ps
+docker inspect <CONTAINER_ID>
+```
+
+Na saída do `inspect`, na seção `Networks`, você verá que o container está conectado à rede `bridge`.
+
+**Listando redes Docker:**
+```bash
+docker network ls
+```
+
+**Redes padrão do Docker:**
+
+| Nome | Driver | Escopo | Descrição |
+|------|--------|--------|-----------|
+| **bridge** | bridge | local | Rede padrão para containers |
+| **host** | host | local | Remove isolamento de rede (usa rede do host) |
+| **none** | null | local | Container sem interface de rede |
+
+**Inspecionando redes:**
+```bash
+# Ver detalhes de uma rede específica
+docker network inspect bridge
+
+# Ver configurações de rede de um container
+docker inspect <CONTAINER_ID> | grep -A 20 Networks
+```
+
+**Comunicação entre containers na mesma rede:**
+
+Containers na mesma rede podem se comunicar via IP:
+
+```bash
+# Terminal 1: Criar primeiro container
+docker run -it --name container1 ubuntu bash
+
+# Terminal 2: Criar segundo container
+docker run -it --name container2 ubuntu bash
+
+# Terminal 3: Verificar IPs dos containers
+docker inspect container1 | grep IPAddress
+docker inspect container2 | grep IPAddress
+
+# Dentro do container2, instalar ping
+apt-get update
+apt-get install iputils-ping -y
+
+# Testar comunicação via IP
+ping <IP_DO_CONTAINER1>  # Exemplo: ping 172.17.0.2
+```
+
+**Problemas da comunicação via IP:**
+- **Instabilidade**: IPs podem mudar quando containers são recriados
+- **Não confiável**: Containers reiniciados podem receber IPs diferentes
+- **Difícil manutenção**: Hardcoding de IPs é uma má prática
+- **Falta de DNS**: Não há resolução de nomes por padrão na rede bridge
+
+**Solução: Criar redes customizadas (User-Defined Bridge)**
+
+Para estabelecer comunicação estável entre containers, precisamos de dois elementos:
+1. **Nomes definidos** para os containers (não usar nomes aleatórios)
+2. **Rede customizada** criada por nós (não usar a bridge padrão)
+
+**Por que não basta apenas nomear os containers?**
+- Nomes definidos com `--name` são mais estáveis que IPs
+- Mas a rede bridge padrão **não oferece resolução DNS automática**
+- Precisamos criar nossa própria rede bridge (user-defined bridge)
+
+> ** Importante:** Apenas nomear containers com `--name` não é suficiente! A rede bridge padrão não resolve nomes automaticamente. Você **deve** criar uma rede customizada para ter resolução DNS funcionando.
+
+**Passo a passo completo:**
+
+```bash
+# 1. Limpar containers existentes (opcional)
+docker container rm $(docker container ps -aq) --force
+
+# 2. Criar uma rede bridge customizada
+docker network create --driver bridge minha-bridge
+
+# 3. Verificar que a rede foi criada
+docker network ls
+# Agora você verá: bridge (padrão), host, none, e minha-bridge
+
+# 4. Criar primeiro container com nome e rede definidos
+docker run -it --name ubuntu1 --network minha-bridge ubuntu bash
+
+# 5. Em outro terminal, criar segundo container na mesma rede
+docker run -d --name pong --network minha-bridge ubuntu sleep 1d
+
+# 6. Verificar que ambos estão na mesma rede customizada
+docker inspect ubuntu1 | grep -A 10 Networks
+docker inspect pong | grep -A 10 Networks
+
+# 7. Dentro do container ubuntu1, instalar ping
+apt-get update
+apt-get install iputils-ping -y
+
+# 8. Testar comunicação via hostname (não via IP!)
+ping pong  # Funciona! Resolve automaticamente para o IP do container
+```
+
+**O que acontece nos bastidores:**
+- A rede `minha-bridge` provê **resolução automática de DNS**
+- Quando você faz `ping pong`, o Docker resolve para o IP correto (ex: 172.19.0.3)
+- Mesmo que o IP mude, o nome `pong` sempre funcionará
+- Isso é exclusivo de **user-defined bridges** (não funciona na bridge padrão)
+
+**Exemplo prático com nomes descritivos:**
+```bash
+# Criar rede para aplicação
+docker network create --driver bridge app-network
+
+# Container do banco de dados
+docker run -d \
+  --name postgres-db \
+  --network app-network \
+  -e POSTGRES_PASSWORD=senha123 \
+  postgres
+
+# Container da aplicação
+docker run -d \
+  --name backend-api \
+  --network app-network \
+  -p 8080:8080 \
+  minha-api
+
+# A aplicação se conecta ao banco usando: postgres-db:5432
+# Não precisa saber o IP, apenas o nome!
+```
+
+**Comandos essenciais de rede:**
+```bash
+docker network ls                          # Lista todas as redes
+docker network create <nome>               # Cria uma nova rede
+docker network inspect <nome>              # Inspeciona detalhes da rede
+docker network connect <rede> <container>  # Conecta container a uma rede
+docker network disconnect <rede> <container> # Desconecta container de uma rede
+docker network rm <nome>                   # Remove uma rede
+docker network prune                       # Remove redes não utilizadas
+```
+
+**Criando redes com drivers específicos:**
+```bash
+# Rede bridge customizada (padrão)
+docker network create --driver bridge minha-rede
+
+# Rede com subnet específica
+docker network create --subnet=192.168.0.0/16 minha-rede-custom
+```
+
+**Conectando containers existentes a redes:**
+```bash
+# Criar container sem rede específica
+docker run -d --name app nginx
+
+# Conectar a uma rede existente
+docker network connect minha-rede app
+
+# Desconectar de uma rede
+docker network disconnect bridge app
+```
+
+**Exemplo prático: Aplicação com banco de dados**
+```bash
+# 1. Criar rede para a aplicação
+docker network create app-network
+
+# 2. Criar container do banco de dados
+docker run -d \
+  --name postgres-db \
+  --network app-network \
+  -e POSTGRES_PASSWORD=senha123 \
+  postgres
+
+# 3. Criar container da aplicação
+docker run -d \
+  --name minha-app \
+  --network app-network \
+  -p 8080:8080 \
+  minha-imagem
+
+# 4. A aplicação pode se conectar ao banco usando: postgres-db:5432
+```
+
+**Vantagens de redes customizadas:**
+- **Resolução DNS automática**: Containers se comunicam por nome
+- **Isolamento**: Apenas containers na mesma rede podem se comunicar
+- **Segurança**: Melhor controle sobre quem se comunica com quem
+- **Flexibilidade**: Containers podem estar em múltiplas redes
+- **Estabilidade**: Nomes não mudam, mesmo se IPs mudarem
+
+**Diferenças entre rede bridge padrão e customizada:**
+
+| Característica | Bridge Padrão | Bridge Customizada |
+|----------------|---------------|-------------------|
+| **Resolução DNS** | Não | Sim (por nome do container) |
+| **Isolamento** | Todos os containers | Apenas containers conectados |
+| **Comunicação** | Apenas via IP | Via nome ou IP |
+| **Recomendação** | Testes rápidos | Produção e aplicações reais |
+
+**Boas práticas com redes:**
+- Sempre use redes customizadas em produção
+- Nomeie containers de forma descritiva para facilitar DNS
+- Crie redes separadas para diferentes aplicações
+- Use `--network` ao criar containers, não conecte depois
+- Documente as redes utilizadas no seu projeto
+
+**Entendendo os tipos de rede do Docker:**
+
+**1. Bridge (padrão):**
+- Rede padrão quando você não especifica `--network`
+- Containers podem se comunicar via IP
+- **Não oferece resolução DNS automática**
+- Adequada apenas para testes rápidos
+
+**2. User-Defined Bridge (recomendada):**
+- Criada com `docker network create --driver bridge`
+- **Oferece resolução DNS automática** entre containers
+- Melhor isolamento e controle
+- Recomendada para produção
+
+**3. None (driver null):**
+- Container **sem nenhuma interface de rede**
+- Completamente isolado em termos de rede
+- Não consegue realizar operações que envolvam rede
+- Máxima segurança para processamento local
+
+**Quando usar:**
+- Processamento de dados que não requer rede
+- Tarefas batch isoladas
+- Máxima segurança (sem acesso externo)
+- Testes de aplicações sem dependências de rede
+
+**Exemplo prático:**
+```bash
+# Criar container sem rede
+docker run -d --network none ubuntu sleep 1d
+
+# Inspecionar o container
+docker ps
+docker inspect <CONTAINER_ID>
+# Na seção Networks, você verá que está usando "none"
+
+# Testar dentro do container
+docker exec -it <CONTAINER_ID> bash
+ping google.com  # Não funciona! Sem interface de rede
+curl google.com  # Não funciona! Sem conectividade
+```
+
+**Características da rede none:**
+- Sem interface de rede
+- Sem conectividade externa
+- Sem comunicação com outros containers
+- Isolamento total
+- Máxima segurança
+
+**4. Host:**
+- Remove **todo o isolamento de rede** entre container e host
+- Container usa **diretamente a interface de rede do host**
+- **Não precisa mapear portas** (acessa portas do host diretamente)
+- Útil para performance máxima, mas menos seguro
+
+**Quando usar:**
+- Performance crítica de rede
+- Aplicações que precisam acessar muitas portas
+- Ferramentas de monitoramento de rede
+- Ambientes onde mapeamento de portas é limitante
+
+**Exemplo prático:**
+```bash
+# Verificar redes disponíveis
+docker network ls
+
+# Executar aplicação na rede host
+docker run -d --network host aluradocker/app-node:1.0
+
+# Inspecionar o container
+docker inspect <CONTAINER_ID>
+# Na seção Networks, você verá que está usando "host"
+
+# Acessar a aplicação SEM mapeamento de portas
+# Se a aplicação roda na porta 3000, acesse:
+# http://localhost:3000
+# Funciona! Mesmo sem usar -p 3000:3000
+```
+
+**O que acontece com a rede host:**
+- Container compartilha **a mesma interface de rede do host**
+- Aplicação na porta 3000 do container = porta 3000 do host
+- **Não há isolamento de rede**
+- Se a porta já estiver em uso no host, haverá **conflito**
+
+**Exemplo de conflito de portas:**
+```bash
+# Se você já tem algo rodando na porta 3000 do host
+# E tentar executar:
+docker run -d --network host aluradocker/app-node:1.0
+# O container não conseguirá iniciar corretamente
+# Erro: porta 3000 já está em uso!
+```
+
+**Vantagens e desvantagens:**
+
+| Aspecto | None | Host |
+|---------|------|------|
+| **Isolamento** | Total | Nenhum |
+| **Performance** | N/A | Máxima |
+| **Segurança** | Máxima | Mínima |
+| **Mapeamento de portas** | N/A | Não necessário |
+| **Uso recomendado** | Processamento isolado | Performance crítica |
+| **Conflitos** | Nenhum | Possível (portas) |
+
+**Resumo comparativo dos 4 tipos de rede:**
+
+| Tipo de Rede | Quando Usar | Resolução DNS | Isolamento | Mapeamento de Portas |
+|--------------|-------------|---------------|------------|---------------------|
+| **Bridge (padrão)** | Testes rápidos | Não | Médio | Sim |
+| **User-Defined Bridge** | Produção, aplicações reais | Sim | Alto | Sim |
+| **Host** | Performance crítica | N/A | Nenhum | Não |
+| **None** | Processamento isolado | N/A | Total | N/A |
+
+**Decisão rápida: Qual rede usar?**
+
+```
+Precisa de comunicação entre containers?
+├─ Sim → Use User-Defined Bridge (--network minha-rede)
+│         • Resolução DNS automática
+│         • Isolamento entre aplicações
+│         • Recomendado para produção
+│
+├─ Não, mas precisa de acesso externo → Use Bridge padrão
+│         • Apenas para testes rápidos
+│         • Comunicação só via IP
+│
+├─ Precisa de máxima performance de rede? → Use Host
+│         • Sem isolamento
+│         • Cuidado com conflitos de porta
+│
+└─ Não precisa de rede? → Use None
+          • Máximo isolamento
+          • Máxima segurança
+```
+
+**Referências oficiais:**
+- A documentação oficial do Docker recomenda usar **user-defined bridges** para produção
+- [Docker Bridge Networks](https://docs.docker.com/network/bridge/)
+- [Docker Network Drivers](https://docs.docker.com/network/drivers/)
+
+---
+
+### Comunicação entre containers na prática: Aplicação + Banco de dados
+
+**Cenário real:**
+Vamos criar uma aplicação completa com:
+- **Back-end**: Aplicação Node.js (alura-books)
+- **Banco de dados**: MongoDB
+- **Comunicação**: Via rede customizada usando hostnames
+
+**Preparação - Baixar as imagens:**
+```bash
+# Baixar imagem do MongoDB (versão específica)
+docker pull mongo:4.4.6
+
+# Baixar imagem da aplicação
+docker pull aluradocker/alura-books:1.0
+
+# Verificar imagens baixadas
+docker images
+```
+
+**Passo 1: Criar a rede customizada**
+```bash
+# Verificar redes existentes
+docker network ls
+
+# Criar rede bridge customizada (se ainda não existir)
+docker network create --driver bridge minha-bridge
+```
+
+**Passo 2: Executar o container do banco de dados**
+```bash
+docker run -d \
+  --network minha-bridge \
+  --name meu-mongo \
+  mongo:4.4.6
+```
+
+**Por que o nome `meu-mongo` é importante?**
+- A aplicação `alura-books` está configurada para buscar o banco pelo hostname `meu-mongo`
+- No arquivo de configuração da aplicação, o host do banco está definido como `meu-mongo`
+- Por isso, o nome do container **deve ser exatamente** `meu-mongo`
+
+**Passo 3: Executar o container da aplicação**
+```bash
+docker run -d \
+  --network minha-bridge \
+  --name alurabooks \
+  -p 3000:3000 \
+  aluradocker/alura-books:1.0
+```
+
+**Detalhes importantes:**
+- `--network minha-bridge`: Mesma rede do banco (obrigatório para comunicação)
+- `--name alurabooks`: Nome do container (pode ser qualquer um)
+- `-p 3000:3000`: Mapeamento de porta (necessário porque não estamos usando rede host)
+
+**Passo 4: Testar a aplicação**
+```bash
+# Verificar containers em execução
+docker ps
+
+# Acessar no navegador:
+# http://localhost:3000
+
+# Popular o banco de dados (endpoint especial)
+# http://localhost:3000/seed
+
+# Atualizar a página para ver os dados carregados
+```
+
+**Como funciona a comunicação:**
+```
+┌─────────────────────┐         ┌──────────────────────┐
+│   alurabooks        │         │     meu-mongo        │
+│   (aplicação)       │────────▶│   (MongoDB)          │
+│   porta: 3000       │         │   porta: 27017       │
+└─────────────────────┘         └──────────────────────┘
+         │                               │
+         └───────────────────────────────┘
+              minha-bridge (rede)
+              Resolução DNS automática
+```
+
+**Testando a persistência:**
+```bash
+# Parar o container do MongoDB
+docker stop meu-mongo
+
+# Acessar http://localhost:3000
+# Os dados desaparecem (sem conexão com banco)
+
+# Reiniciar o MongoDB
+docker start meu-mongo
+
+# Popular novamente: http://localhost:3000/seed
+# Atualizar a página - dados voltam!
+```
+
+**Fluxo completo de comandos:**
+```bash
+# 1. Preparação
+docker pull mongo:4.4.6
+docker pull aluradocker/alura-books:1.0
+docker network create --driver bridge minha-bridge
+
+# 2. Iniciar banco de dados
+docker run -d --network minha-bridge --name meu-mongo mongo:4.4.6
+
+# 3. Iniciar aplicação
+docker run -d --network minha-bridge --name alurabooks -p 3000:3000 aluradocker/alura-books:1.0
+
+# 4. Verificar
+docker ps
+
+# 5. Acessar no navegador
+# http://localhost:3000/seed (popular banco)
+# http://localhost:3000 (ver dados)
+```
+
+**Verificando a comunicação:**
+```bash
+# Entrar no container da aplicação
+docker exec -it alurabooks bash
+
+# Dentro do container, testar conectividade
+ping meu-mongo  # Resolve para o IP do container MongoDB
+# Funciona! DNS automático da rede customizada
+
+# Sair do container
+exit
+```
+
+**Pontos importantes deste exemplo:**
+
+1. **Mesma rede é obrigatória**
+   - Ambos containers devem estar na mesma rede customizada
+   - Sem isso, não há comunicação entre eles
+
+2. **Nome do banco é crítico**
+   - A aplicação busca pelo hostname `meu-mongo`
+   - O nome do container deve corresponder ao configurado na aplicação
+
+3. **Mapeamento de portas**
+   - Necessário para acessar a aplicação externamente
+   - O banco não precisa de mapeamento (comunicação interna)
+
+4. **Ordem de inicialização**
+   - Banco deve estar rodando antes da aplicação
+   - Aplicação precisa do banco disponível para conectar
+
+**Limitações da abordagem manual:**
+
+- Precisamos iniciar containers manualmente (um por um)
+- Ordem de inicialização deve ser respeitada
+- Configurações podem ser esquecidas
+- Difícil de gerenciar múltiplos containers
+- Não é prático para ambientes de produção
+
+> **Nota:** Em ambientes reais, usamos ferramentas como **Docker Compose** para orquestrar múltiplos containers automaticamente, definindo toda a configuração em um arquivo YAML.
+
+---
+
+## 🐝 Docker Compose: coordenando múltiplos containers
+
+**O problema da abordagem manual:**
+
+Quando trabalhamos com múltiplos containers, a abordagem manual apresenta diversos desafios:
+
+```bash
+# Precisamos executar cada container manualmente
+docker run -d --network minha-bridge --name meu-mongo mongo:4.4.6
+docker run -d --network minha-bridge --name alurabooks -p 3000:3000 aluradocker/alura-books:1.0
+
+# Para parar, precisamos parar cada um individualmente
+docker stop meu-mongo
+docker stop alurabooks
+
+# Para remover, o mesmo processo
+docker rm meu-mongo
+docker rm alurabooks
+```
+
+**Problemas:**
+- Comandos longos e complexos
+- Ordem de execução deve ser respeitada
+- Difícil de gerenciar quando a aplicação cresce
+- Propenso a erros (esquecer parâmetros, nomes, portas)
+- Não é escalável para ambientes com muitos containers
+
+**A solução: Docker Compose**
+
+Docker Compose é uma ferramenta de **coordenação de containers** (diferente de orquestração) que permite:
+- Definir múltiplos containers em um único arquivo YAML
+- Gerenciar todo o ambiente com comandos simples
+- Garantir ordem de inicialização
+- Facilitar compartilhamento de configurações
+
+**Coordenação vs Orquestração:**
+- **Coordenação (Compose)**: Gerencia containers em um único host
+- **Orquestração (Kubernetes, Swarm)**: Gerencia containers em múltiplos hosts/clusters
+
+**Como funciona:**
+- Arquivo `docker-compose.yml` define toda a configuração
+- Versão do Compose, serviços, redes, volumes
+- Estrutura baseada em indentação (YAML)
+- Um único comando para subir/parar toda a aplicação
+
+---
+
+### Instalando o Docker Compose
+
+**No Windows:**
+- Docker Compose já vem instalado com o Docker Desktop
+- Não é necessário instalação adicional
+- Teste: `docker-compose --version`
+
+**No Linux:**
+
+**Verificar se já está instalado:**
+```bash
+docker-compose --version
+# Se não estiver instalado, o comando não será reconhecido
+```
+
+**Instalação via documentação oficial:**
+
+**Passo 1: Baixar o binário**
+```bash
+# Baixar a versão mais recente (substitua pela versão atual se necessário)
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+
+**Passo 2: Tornar executável**
+```bash
+# Dar permissão de execução
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+**Passo 3: Verificar instalação**
+```bash
+# Abrir novo terminal e testar
+docker-compose --version
+# Saída esperada: docker-compose version 1.29.2, build...
+```
+
+**Comandos básicos do Docker Compose:**
+```bash
+docker-compose --version              # Verifica versão instalada
+docker-compose --help                 # Lista todos os comandos disponíveis
+docker-compose up                     # Sobe todos os containers
+docker-compose down                   # Para e remove todos os containers
+docker-compose ps                     # Lista containers do compose
+docker-compose logs                   # Mostra logs de todos os containers
+```
+
+**Instalação alternativa (não recomendada):**
+```bash
+# Via apt (pode instalar versão desatualizada)
+sudo apt install docker-compose
+
+# Via snap
+sudo snap install docker-compose
+```
+
+> **Recomendação:** Sempre use a instalação via documentação oficial para obter a versão mais recente e estável.
+
+**Links úteis:**
+- [Documentação oficial - Install Docker Compose](https://docs.docker.com/compose/install/)
+- [Releases do Docker Compose no GitHub](https://github.com/docker/compose/releases)
+
+**Próximos passos:**
+
+Agora que temos o Docker Compose instalado, vamos transformar nossa aplicação manual (alura-books + MongoDB) em um arquivo `docker-compose.yml`, simplificando todo o processo de gerenciamento.
+
+---
+
+## 📝 Resumo dos conceitos principais
 
 **[Docker Hub](https://hub.docker.com/):**
 - Repositório central de imagens Docker
@@ -781,9 +1467,15 @@ ls /secrets  # vazio! senha não foi persistida (segurança)
 - **Bind Mounts**: Vincula diretórios do host ao container
 - **tmpfs**: Armazenamento temporário em memória (Linux only)
 
+**Redes Docker:**
+- **bridge**: Rede padrão, comunicação via IP
+- **Redes customizadas**: Resolução DNS automática por nome
+- **Isolamento**: Containers só se comunicam na mesma rede
+- **Comandos**: `docker network create/ls/inspect/connect`
+
 ---
 
-#### Boas práticas gerais
+## ✅ Boas práticas gerais
 
 **Segurança:**
 - Não execute containers como root quando possível
@@ -815,9 +1507,16 @@ ls /secrets  # vazio! senha não foi persistida (segurança)
 - Utilize variáveis de ambiente para configurações
 - Teste imagens localmente antes de fazer push
 
+**Redes:**
+- Sempre use redes customizadas em produção
+- Evite comunicação via IP, prefira nomes de containers
+- Crie redes separadas para isolar diferentes aplicações
+- Use `--network` ao criar containers para melhor organização
+- Documente as dependências de rede entre containers
+
 ---
 
-#### Referência rápida de comandos
+## ⚡ Referência rápida de comandos
 
 **Imagens:**
 ```bash
@@ -851,6 +1550,17 @@ docker volume rm <nome>                # Remover volume
 docker volume prune                    # Remover volumes não utilizados
 ```
 
+**Redes:**
+```bash
+docker network ls                      # Listar redes
+docker network create <nome>           # Criar rede
+docker network inspect <nome>          # Inspecionar rede
+docker network connect <rede> <container> # Conectar container à rede
+docker network disconnect <rede> <container> # Desconectar container
+docker network rm <nome>               # Remover rede
+docker network prune                   # Remover redes não utilizadas
+```
+
 **Limpeza:**
 ```bash
 docker container prune                 # Remover containers parados
@@ -869,10 +1579,53 @@ docker top <container_id>              # Processos em execução no container
 
 ---
 
-## Recursos adicionais
+## 🔗 Recursos adicionais
 
-- **[Documentação oficial do Docker](https://docs.docker.com/)**
-- **[Docker Hub](https://hub.docker.com/)** - Repositório de imagens
-- **[Dockerfile Reference](https://docs.docker.com/engine/reference/builder/)** - Referência completa do Dockerfile
-- **[Docker Compose](https://docs.docker.com/compose/)** - Orquestração de múltiplos containers
-- **[Best Practices](https://docs.docker.com/develop/dev-best-practices/)** - Melhores práticas oficiais
+**Documentação oficial:**
+- [Docker Documentation](https://docs.docker.com/) - Documentação completa
+- [Docker Hub](https://hub.docker.com/) - Repositório de imagens
+- [Dockerfile Reference](https://docs.docker.com/engine/reference/builder/) - Referência do Dockerfile
+- [Docker Compose](https://docs.docker.com/compose/) - Guia do Docker Compose
+- [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/) - Melhores práticas
+
+**Tutoriais e cursos:**
+- [Docker Get Started](https://docs.docker.com/get-started/) - Tutorial oficial
+- [Play with Docker](https://labs.play-with-docker.com/) - Ambiente de testes online
+- [Docker Curriculum](https://docker-curriculum.com/) - Tutorial interativo
+
+**Comunidade:**
+- [Docker Community Forums](https://forums.docker.com/)
+- [Stack Overflow - Docker](https://stackoverflow.com/questions/tagged/docker)
+- [Reddit - r/docker](https://www.reddit.com/r/docker/)
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## 👤 Autor
+
+**Gabriel**
+- GitHub: [@rouri404](https://github.com/rouri404)
+- Docker Hub: [gabricoto](https://hub.docker.com/u/gabricoto)
+
+---
+
+## ⭐ Agradecimentos
+
+- [Alura](https://www.alura.com.br/) - Pela excelente plataforma de ensino
+- Comunidade Docker - Pela documentação e suporte
+- Todos que contribuíram com feedback e melhorias
+
+---
+
+<div align="center">
+
+**[⬆ Voltar ao topo](#docker-criando-e-gerenciando-containers)**
+
+Feito com 💙 por [Gabriel](https://github.com/rouri404)
+
+</div>

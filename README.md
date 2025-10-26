@@ -1,38 +1,67 @@
 <div align="center">
 
-# [Docker: Criando e Gerenciando Containers](https://cursos.alura.com.br/course/docker-criando-gerenciando-containers/)
+# Docker: Criando e Gerenciando Containers
 
 [![Curso](https://img.shields.io/badge/Alura-Docker-blue)](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 
-Repositório criado para fins de estudo sobre **Docker**, curso realizado na plataforma **Alura**.
+**Guia completo de Docker: da instalação à orquestração com Docker Compose**
 
-[Documentação Oficial](https://docs.docker.com/) • [Docker Hub](https://hub.docker.com/)
+[Documentação Oficial](https://docs.docker.com/) • [Docker Hub](https://hub.docker.com/) • [Curso na Alura](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
 
 </div>
 
+---
+
+## Sobre o Projeto
+
+Este repositório contém um guia completo e prático sobre **Docker**, desenvolvido durante o curso da **Alura**. O material abrange desde conceitos fundamentais até tópicos avançados como redes, volumes e Docker Compose.
+
+**Pré-requisitos:**
+- Sistema operacional Linux, Windows ou macOS
+- Conhecimentos básicos de terminal/linha de comando
+- Docker instalado (guia de instalação incluído)
+
+---
+
 ## Índice
 
+### Fundamentos
 - [Conceitos fundamentais](#conceitos-fundamentais)
 - [Gerenciando imagens Docker](#gerenciando-imagens-docker)
-- [Instalação do Docker](#instalar-docker-no-arch-linux-e-derivados)
+- [Instalação do Docker](#instalação-do-docker)
+
+### Trabalhando com Containers
 - [Ciclo de vida dos containers](#ciclo-de-vida-dos-containers)
 - [Mapeamento de portas](#mapeamento-de-portas)
+
+### Imagens Customizadas
 - [Criando suas próprias imagens](#criando-suas-próprias-imagens-docker)
 - [Enviando imagens para o Docker Hub](#enviando-imagens-para-o-docker-hub)
-- [Persistência de dados](#tamanho-dos-containers-e-persistência-de-dados)
-  - [Bind Mounts](#bind-mounts-persistindo-dados-com-diretórios-do-host)
-  - [Volumes](#volumes-armazenamento-gerenciado-pelo-docker)
-  - [tmpfs](#tmpfs-armazenamento-temporário-em-memória)
+
+### Persistência de Dados
+- [Introdução à persistência](#persistência-de-dados)
+- [Bind Mounts](#bind-mounts-persistindo-dados-com-diretórios-do-host)
+- [Volumes](#volumes-armazenamento-gerenciado-pelo-docker)
+- [tmpfs](#tmpfs-armazenamento-temporário-em-memória)
+
+### Redes e Comunicação
 - [Redes Docker](#redes-docker-comunicação-entre-containers)
-- [Resumo dos conceitos principais](#resumo-dos-conceitos-principais)
-- [Boas práticas gerais](#boas-práticas-gerais)
+- [Exemplo prático: Aplicação + Banco de dados](#comunicação-entre-containers-na-prática-aplicação--banco-de-dados)
+
+### Docker Compose
+- [Introdução ao Docker Compose](#docker-compose-coordenando-múltiplos-containers)
+- [Instalando o Docker Compose](#instalando-o-docker-compose)
+
+### Referência
+- [Resumo dos conceitos](#resumo-dos-conceitos-principais)
+- [Boas práticas](#boas-práticas-gerais)
 - [Referência rápida de comandos](#referência-rápida-de-comandos)
 - [Recursos adicionais](#recursos-adicionais)
 
 ---
 
-#### Conceitos fundamentais
+## Conceitos fundamentais
 
 **[Docker Hub](https://hub.docker.com/):**
 - Repositório central de imagens Docker
@@ -51,7 +80,7 @@ Repositório criado para fins de estudo sobre **Docker**, curso realizado na pla
 
 ---
 
-#### Gerenciando imagens *Docker*
+## Gerenciando imagens Docker
 
 **O que são imagens:**
 - Conjunto de camadas empilhadas que formam um template
@@ -96,7 +125,9 @@ docker history ubuntu                        # Mostra camadas da imagem
 
 ---
 
-#### Instalar Docker no Arch Linux e derivados
+## Instalação do Docker
+
+### Arch Linux e derivados
 
 ```bash
 sudo pacman -Syu                        # Atualiza o sistema.
@@ -110,7 +141,7 @@ sudo docker run hello-world             # Verifica se a instalação foi bem-suc
 
 ---
 
-#### Ciclo de vida dos containers
+## Ciclo de vida dos containers
 
 **Comandos essenciais para gerenciar containers:**
 
@@ -163,7 +194,7 @@ docker start meu-container              # Inicia container pelo nome
 
 ---
 
-#### Mapeamento de portas
+## Mapeamento de portas
 
 Por padrão, containers ficam isolados da rede do host. Para acessar aplicações web, é necessário mapear portas do container para o host.
 
@@ -215,7 +246,7 @@ docker logs <CONTAINER_ID>                            # Visualiza logs da aplica
 
 ---
 
-#### Criando suas próprias imagens Docker
+## Criando suas próprias imagens Docker
 
 **Fluxo de criação:**
 1. Definir um arquivo `Dockerfile`
@@ -319,7 +350,7 @@ meu-projeto/
 
 ---
 
-#### Enviando imagens para o Docker Hub
+## Enviando imagens para o Docker Hub
 
 **Preparação:**
 1. Criar conta no [Docker Hub](https://hub.docker.com/)
@@ -398,7 +429,9 @@ docker push gabricoto/app-node:1.0
 
 ---
 
-#### Tamanho dos containers e persistência de dados
+## Persistência de dados
+
+### Tamanho dos containers
 
 **Comandos de limpeza do sistema:**
 ```bash
@@ -513,7 +546,7 @@ docker ps -s
 
 ---
 
-#### Bind mounts: persistindo dados com diretórios do host
+### Bind mounts: persistindo dados com diretórios do host
 
 **Criando um bind mount com -v:**
 ```bash
@@ -557,7 +590,7 @@ docker run -it \
 
 ---
 
-#### Volumes: armazenamento gerenciado pelo Docker
+### Volumes: armazenamento gerenciado pelo Docker
 
 **Por que usar volumes?**
 - Área gerenciada pelo Docker dentro do sistema de arquivos
@@ -658,7 +691,7 @@ ls /dados  # arquivo-importante.txt ainda está lá
 
 ---
 
-#### tmpfs: armazenamento temporário em memória
+### tmpfs: armazenamento temporário em memória
 
 **O que é tmpfs?**
 - Terceiro tipo de persistência disponível no Docker
@@ -754,7 +787,7 @@ ls /secrets  # vazio! senha não foi persistida (segurança)
 
 ---
 
-#### Redes Docker: comunicação entre containers
+## Redes Docker: comunicação entre containers
 
 **Por que redes são importantes?**
 - Containers são isolados por padrão através de namespaces
@@ -1098,7 +1131,7 @@ docker run -d --network host aluradocker/app-node:1.0
 
 ---
 
-#### Resumo dos conceitos principais
+## Resumo dos conceitos principais
 
 **[Docker Hub](https://hub.docker.com/):**
 - Repositório central de imagens Docker
@@ -1134,7 +1167,7 @@ docker run -d --network host aluradocker/app-node:1.0
 
 ---
 
-#### Boas práticas gerais
+## Boas práticas gerais
 
 **Segurança:**
 - Não execute containers como root quando possível
@@ -1175,7 +1208,7 @@ docker run -d --network host aluradocker/app-node:1.0
 
 ---
 
-#### Referência rápida de comandos
+## Referência rápida de comandos
 
 **Imagens:**
 ```bash
@@ -1240,8 +1273,51 @@ docker top <container_id>              # Processos em execução no container
 
 ## Recursos adicionais
 
-- **[Documentação oficial do Docker](https://docs.docker.com/)**
-- **[Docker Hub](https://hub.docker.com/)** - Repositório de imagens
-- **[Dockerfile Reference](https://docs.docker.com/engine/reference/builder/)** - Referência completa do Dockerfile
-- **[Docker Compose](https://docs.docker.com/compose/)** - Orquestração de múltiplos containers
-- **[Best Practices](https://docs.docker.com/develop/dev-best-practices/)** - Melhores práticas oficiais
+**Documentação oficial:**
+- [Docker Documentation](https://docs.docker.com/) - Documentação completa
+- [Docker Hub](https://hub.docker.com/) - Repositório de imagens
+- [Dockerfile Reference](https://docs.docker.com/engine/reference/builder/) - Referência do Dockerfile
+- [Docker Compose](https://docs.docker.com/compose/) - Guia do Docker Compose
+- [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/) - Melhores práticas
+
+**Tutoriais e cursos:**
+- [Docker Get Started](https://docs.docker.com/get-started/) - Tutorial oficial
+- [Play with Docker](https://labs.play-with-docker.com/) - Ambiente de testes online
+- [Docker Curriculum](https://docker-curriculum.com/) - Tutorial interativo
+
+**Comunidade:**
+- [Docker Community Forums](https://forums.docker.com/)
+- [Stack Overflow - Docker](https://stackoverflow.com/questions/tagged/docker)
+- [Reddit - r/docker](https://www.reddit.com/r/docker/)
+
+---
+
+## Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## Autor
+
+**Gabriel**
+- GitHub: [@rouri404](https://github.com/rouri404)
+- Docker Hub: [gabricoto](https://hub.docker.com/u/gabricoto)
+
+---
+
+## Agradecimentos
+
+- [Alura](https://www.alura.com.br/) - Pela excelente plataforma de ensino
+- Comunidade Docker - Pela documentação e suporte
+- Todos que contribuíram com feedback e melhorias
+
+---
+
+<div align="center">
+
+**[⬆ Voltar ao topo](#docker-criando-e-gerenciando-containers)**
+
+Feito por [Gabriel](https://github.com/rouri404)
+
+</div>

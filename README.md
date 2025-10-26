@@ -1,10 +1,34 @@
-<center>
+<div align="center">
 
-### [`Docker: criando e gerenciando containers`](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
+# Docker: Criando e Gerenciando Containers
 
-</center>
+[![Curso](https://img.shields.io/badge/Alura-Docker-blue)](https://www.alura.com.br/course/docker-criando-gerenciando-containers)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-Repositório criado para fins de estudo sobre ***Docker***, curso realizado na plataforma *Alura*.
+Repositório criado para fins de estudo sobre **Docker**, curso realizado na plataforma **Alura**.
+
+[Documentação Oficial](https://docs.docker.com/) • [Docker Hub](https://hub.docker.com/)
+
+</div>
+
+## Índice
+
+- [Conceitos fundamentais](#conceitos-fundamentais)
+- [Gerenciando imagens Docker](#gerenciando-imagens-docker)
+- [Instalação do Docker](#instalar-docker-no-arch-linux-e-derivados)
+- [Ciclo de vida dos containers](#ciclo-de-vida-dos-containers)
+- [Mapeamento de portas](#mapeamento-de-portas)
+- [Criando suas próprias imagens](#criando-suas-próprias-imagens-docker)
+- [Enviando imagens para o Docker Hub](#enviando-imagens-para-o-docker-hub)
+- [Persistência de dados](#tamanho-dos-containers-e-persistência-de-dados)
+  - [Bind Mounts](#bind-mounts-persistindo-dados-com-diretórios-do-host)
+  - [Volumes](#volumes-armazenamento-gerenciado-pelo-docker)
+  - [tmpfs](#tmpfs-armazenamento-temporário-em-memória)
+- [Resumo dos conceitos principais](#resumo-dos-conceitos-principais)
+- [Boas práticas gerais](#boas-práticas-gerais)
+- [Referência rápida de comandos](#referência-rápida-de-comandos)
+- [Recursos adicionais](#recursos-adicionais)
 
 ---
 
@@ -120,132 +144,22 @@ docker rm -f <CONTAINER_ID>                # Remove container forçadamente
 
 ---
 
-#### Comandos relevantes
-
+**Listando containers:**
 ```bash
-docker ps                               # Mostra quais containers estão em execução no momento.
-docker container ls                     # Exatamente a mesma coisa da anterior, só que mais verboso.
-docker ps -a                            # Mostra todos os containers, inclusive os que já não estão mais em execução.
-docker container ls -a                  # Exatamente a mesma coisa da anterior, só que mais verboso.
-```
-> *Nota: Ao executarmos o comando docker run --help, observamos que ao especificar a imagem, podemos enviar um comando para que esse container execute.*
-
-```bash
-docker run --help
-> Usage: docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+docker ps                               # Lista containers em execução
+docker ps -a                            # Lista todos os containers (incluindo parados)
+docker container ls                     # Comando alternativo para docker ps
+docker container ls -a                  # Comando alternativo para docker ps -a
 ```
 
----
-
-#### Interrompendo e reiniciando os *containers*
-
-Para interromper a execução dos *containers*, utilizaremos o comando `docker stop`, fornecendo a ele o **ID** ou o **nome** do *container*.
-
+**Nomeando containers:**
 ```bash
-docker ps -a
-
-> CONTAINER ID   IMAGE         COMMAND    CREATED         STATUS                     PORTS     NAMES
-> a1b2c3c4d5e6   hello-world   "/hello"   1 seconds ago   Exited (0) 1 seconds ago             hello_name
-> b1c2d3d4e5f6   ubuntu        "bash"     1 hour ago      Exited (0) 1 hour ago                ubuntu_name
+docker run --name meu-container ubuntu  # Cria container com nome personalizado
+docker stop meu-container               # Para container pelo nome
+docker start meu-container              # Inicia container pelo nome
 ```
 
-```bash
-docker stop a1b2c3c4d5e6                  # Aqui foi interrompida a partir do ID
-docker stop hello_name                    # Aqui foi interrompida a partir do nome
-```
-
----
-
-#### Interagindo com containers em execução
-
-Para interagir com um *container* que está em execução, utilizamos o comando `docker exec`. Este comando permite executar comandos dentro do *container* de forma interativa.
-
-```bash
-docker exec -it <CONTAINER_ID> bash       # Acessa o terminal do container de forma interativa
-docker exec -it <CONTAINER_ID> sh         # Alternativa ao bash para algumas imagens
-```
-
-**Parâmetros importantes:**
-- `-i`: Mantém o STDIN aberto (interatividade)
-- `-t`: Aloca um pseudo-TTY (terminal)
-- `bash` ou `sh`: Comando a ser executado no *container*
-
-**Exemplo prático:**
-```bash
-docker run -d ubuntu sleep 1d             # Cria um container em background
-docker ps                                 # Lista containers para obter o ID
-docker exec -it <CONTAINER_ID> bash       # Acessa o terminal do container
-```
-
-Dentro do *container*, você terá acesso completo ao sistema de arquivos isolado:
-```bash
-cd /home                                  # Navega para o diretório home
-touch meu-arquivo.txt                     # Cria um arquivo
-ls                                        # Lista arquivos criados
-apt-get update                            # Atualiza pacotes (isolado do host)
-```
-
----
-
-#### Gerenciando o ciclo de vida dos *containers*
-
-**Parando e reiniciando *containers*:**
-```bash
-docker stop <CONTAINER_ID>                # Para o container (aguarda 10 segundos)
-docker stop -t=0 <CONTAINER_ID>           # Para o container instantaneamente
-docker start <CONTAINER_ID>               # Reinicia um container parado
-```
-
-**Pausando e despausando *containers*:**
-```bash
-docker pause <CONTAINER_ID>               # Pausa o container (preserva estado)
-docker unpause <CONTAINER_ID>             # Despausa o container
-```
-
-**Diferenças importantes:**
-- `stop/start`: Mata todos os processos e reinicia do zero
-- `pause/unpause`: Congela os processos mantendo o estado atual
-
-**Removendo containers:**
-```bash
-docker rm <CONTAINER_ID>                  # Remove um container parado
-docker rm -f <CONTAINER_ID>               # Remove um container forçadamente
-```
-
----
-
-#### Criando *containers* interativos
-
-Para criar um *container* que já inicia em modo interativo:
-```bash
-docker run -it ubuntu bash                # Cria e acessa diretamente o terminal
-```
-
-**Características importantes:**
-- O *container* será encerrado automaticamente quando você sair do terminal
-- Todos os dados criados dentro do *container* são perdidos quando ele é removido
-- Cada *container* possui seu próprio sistema de arquivos isolado
-
-**Isolamento de containers:**
-- Arquivos criados dentro de um *container* não aparecem no sistema host
-- Cada *container* possui seu próprio namespace dos processos
-- Modificações em um *container* não afetam outros containers ou o host
-
----
-
-#### Executando *containers* em background
-
-Para executar *containers* sem travar o terminal, utilizamos a flag `-d` (detached):
-
-```bash
-docker run -d ubuntu sleep 1d              # Executa em background
-docker run -d <IMAGEM>                     # Executa qualquer imagem em background
-```
-
-**Vantagens do modo detached:**
-- Terminal permanece disponível para outros comandos
-- Container continua executando em segundo plano
-- Ideal para aplicações que precisam ficar rodando
+> *Nota: Containers podem ser referenciados pelo ID ou nome em qualquer comando.*
 
 ---
 
@@ -440,7 +354,6 @@ docker push aluradocker/app-node:1.2
 
 > *Nota: Esse repositório está disponível no Docker Hub acessando por [aqui](https://hub.docker.com/r/gabricoto/app-node).*
 
-
 **Comandos úteis:**
 ```bash
 docker images                   # Verificar imagens locais
@@ -487,16 +400,22 @@ docker push gabricoto/app-node:1.0
 
 #### Tamanho dos containers e persistência de dados
 
-**Limpeza completa do sistema:**
+**Comandos de limpeza do sistema:**
 ```bash
-# Remover todos os containers (parados e em execução)
-docker container rm $(docker container ls -aq)
+# Remover todos os containers parados
+docker container prune
+
+# Remover todos os containers (forçado)
+docker container rm $(docker container ls -aq) --force
+
+# Remover imagens não utilizadas
+docker image prune
 
 # Remover todas as imagens
-docker rmi $(docker image ls -aq)
-
-# Forçar remoção se houver conflitos
 docker rmi $(docker image ls -aq) --force
+
+# Limpeza completa (containers, imagens, volumes, redes)
+docker system prune -a
 ```
 
 **Verificando tamanho dos containers:**
@@ -596,12 +515,6 @@ docker ps -s
 
 #### Bind mounts: persistindo dados com diretórios do host
 
-**Limpeza inicial (opcional):**
-```bash
-# Remover todos os containers (forçado)
-docker rm $(docker container ps -aq) --force
-```
-
 **Criando um bind mount com -v:**
 ```bash
 # Sintaxe: -v <caminho_no_host>:<caminho_no_container>
@@ -626,14 +539,21 @@ docker run -it \
 - `--mount` é mais explícito/semântico.
 - Se o caminho no host não existir, o Docker acusa o erro (bom para evitar typos).
 
-**Comparação rápida:**
-- `-v host:container`: Atalho, menos verboso.
-- `--mount type=bind,source=...,target=...`: Mais claro, valida melhor os caminhos.
+**Comparação entre -v e --mount:**
 
-**Boas práticas e cautelas:**
-- Garanta que o diretório do host exista e tenha permissões adequadas.
-- Evite acoplar sua imagem a caminhos específicos do host em produção.
-- Para reduzir acoplamento e aumentar portabilidade, prefira Volumes gerenciados pelo Docker (ver próxima seção).
+| Característica | -v | --mount |
+|----------------|----|---------|
+| **Sintaxe** | Compacta | Explícita |
+| **Validação** | Cria diretório se não existir | Erro se diretório não existir |
+| **Legibilidade** | Menos clara | Mais clara |
+| **Recomendação** | Desenvolvimento rápido | Produção e scripts |
+
+**Boas práticas:**
+- Garanta que o diretório do host exista e tenha permissões adequadas
+- Evite caminhos absolutos específicos em ambientes de produção
+- Use variáveis de ambiente para tornar os caminhos configuráveis
+- Prefira volumes gerenciados pelo Docker para maior portabilidade
+- Bind mounts são ideais para desenvolvimento local e hot-reload
 
 ---
 
@@ -861,3 +781,99 @@ ls /secrets  # vazio! senha não foi persistida (segurança)
 - **Volumes**: Solução recomendada, gerenciada pelo Docker
 - **Bind Mounts**: Vincula diretórios do host ao container
 - **tmpfs**: Armazenamento temporário em memória (Linux only)
+
+---
+
+#### Boas práticas gerais
+
+**Segurança:**
+- Não execute containers como root quando possível
+- Use imagens oficiais e verificadas do Docker Hub
+- Mantenha imagens atualizadas para evitar vulnerabilidades
+- Não armazene dados sensíveis em imagens
+
+**Performance:**
+- Use `.dockerignore` para excluir arquivos desnecessários
+- Minimize o número de camadas no Dockerfile
+- Agrupe comandos `RUN` quando possível
+- Use volumes para dados que mudam frequentemente
+
+**Organização:**
+- Nomeie containers e volumes de forma descritiva
+- Use tags semânticas para versionamento de imagens
+- Documente portas expostas com `EXPOSE`
+- Mantenha Dockerfiles simples e legíveis
+
+**Manutenção:**
+- Execute `docker system prune` periodicamente
+- Remova containers e imagens não utilizados
+- Monitore o uso de espaço em disco
+- Faça backup de volumes importantes
+
+**Desenvolvimento:**
+- Use bind mounts para hot-reload durante desenvolvimento
+- Separe ambientes de desenvolvimento e produção
+- Utilize variáveis de ambiente para configurações
+- Teste imagens localmente antes de fazer push
+
+---
+
+#### Referência rápida de comandos
+
+**Imagens:**
+```bash
+docker images                          # Listar imagens
+docker pull <imagem>                   # Baixar imagem
+docker build -t <nome:tag> .           # Construir imagem
+docker rmi <image_id>                  # Remover imagem
+docker tag <origem> <destino>          # Criar tag
+docker push <repositorio:tag>          # Enviar para Docker Hub
+```
+
+**Containers:**
+```bash
+docker ps                              # Listar containers ativos
+docker ps -a                           # Listar todos os containers
+docker run -d -p 8080:80 <imagem>      # Criar e executar container
+docker start <container_id>            # Iniciar container
+docker stop <container_id>             # Parar container
+docker restart <container_id>          # Reiniciar container
+docker rm <container_id>               # Remover container
+docker exec -it <container_id> bash    # Acessar terminal do container
+docker logs <container_id>             # Ver logs do container
+```
+
+**Volumes:**
+```bash
+docker volume ls                       # Listar volumes
+docker volume create <nome>            # Criar volume
+docker volume inspect <nome>           # Inspecionar volume
+docker volume rm <nome>                # Remover volume
+docker volume prune                    # Remover volumes não utilizados
+```
+
+**Limpeza:**
+```bash
+docker container prune                 # Remover containers parados
+docker image prune                     # Remover imagens não utilizadas
+docker volume prune                    # Remover volumes não utilizados
+docker system prune -a                 # Limpeza completa do sistema
+```
+
+**Inspeção:**
+```bash
+docker inspect <container/image_id>    # Informações detalhadas
+docker history <image_id>              # Histórico de camadas
+docker stats                           # Estatísticas de uso em tempo real
+docker top <container_id>              # Processos em execução no container
+```
+
+---
+
+## Recursos adicionais
+
+- **[Documentação oficial do Docker](https://docs.docker.com/)**
+- **[Docker Hub](https://hub.docker.com/)** - Repositório de imagens
+- **[Dockerfile Reference](https://docs.docker.com/engine/reference/builder/)** - Referência completa do Dockerfile
+- **[Docker Compose](https://docs.docker.com/compose/)** - Orquestração de múltiplos containers
+- **[Best Practices](https://docs.docker.com/develop/dev-best-practices/)** - Melhores práticas oficiais

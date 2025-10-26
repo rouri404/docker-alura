@@ -738,6 +738,102 @@ ls /dados  # arquivo-importante.txt ainda está lá
 
 ---
 
+#### tmpfs: armazenamento temporário em memória
+
+**O que é tmpfs?**
+- Terceiro tipo de persistência disponível no Docker
+- Armazena dados diretamente na memória do host
+- **Limitação**: Funciona apenas em hosts Linux
+- Dados são completamente temporários e voláteis
+
+**Como funciona:**
+- Dados são escritos na memória RAM, não no disco
+- Não utiliza a camada read-write do container
+- Tudo é perdido quando o container para
+- Ideal para dados sensíveis que não devem persistir
+
+**Criando tmpfs com --tmpfs:**
+```bash
+# Criar container com tmpfs
+docker run -it --tmpfs=/app ubuntu bash
+
+# Dentro do container:
+cd /app
+ls  # pasta "app" aparece destacada (temporária)
+touch um-arquivo-qualquer
+ls app  # arquivo está lá
+
+# Sair e criar novo container
+exit
+docker run -it --tmpfs=/app ubuntu bash
+ls app  # vazio! dados foram perdidos
+```
+
+**Criando tmpfs com --mount (recomendado):**
+```bash
+# Sintaxe: --mount type=tmpfs,destination=<caminho>
+docker run -it --mount type=tmpfs,destination=/app ubuntu bash
+
+# Dentro do container:
+cd /app
+touch um-arquivo-qualquer
+ls  # arquivo existe
+
+# Sair e criar novo container
+exit
+docker run -it --mount type=tmpfs,destination=/app ubuntu bash
+ls app  # vazio novamente
+```
+
+**Quando usar tmpfs:**
+- **Dados sensíveis**: Senhas, tokens, chaves temporárias
+- **Segurança**: Informações que não devem ser gravadas em disco
+- **Performance**: Operações que precisam de alta velocidade de I/O
+- **Temporariedade**: Dados que só fazem sentido durante a execução
+
+**Características importantes:**
+- **Volátil**: Dados são perdidos ao parar o container
+- **Memória RAM**: Escrita direta na memória do host
+- **Sem persistência**: Nenhum dado sobrevive entre execuções
+- **Linux only**: Não funciona em Windows ou macOS
+
+**Comparação dos três tipos de persistência:**
+
+| Tipo | Localização | Persistência | Uso recomendado |
+|------|-------------|--------------|-----------------|
+| **Volume** | Gerenciado pelo Docker | Sim | Produção, dados importantes |
+| **Bind Mount** | Sistema de arquivos do host | Sim | Desenvolvimento, compartilhamento |
+| **tmpfs** | Memória RAM do host | Não | Dados temporários e sensíveis |
+
+**Exemplo prático - dados sensíveis:**
+```bash
+# Container com arquivo de senha temporário
+docker run -it --tmpfs=/secrets ubuntu bash
+
+# Dentro do container:
+echo "senha-super-secreta" > /secrets/password.txt
+cat /secrets/password.txt  # senha está lá
+
+# Sair do container
+exit
+
+# Criar novo container
+docker run -it --tmpfs=/secrets ubuntu bash
+ls /secrets  # vazio! senha não foi persistida (segurança)
+```
+
+**Vantagens do tmpfs:**
+- **Segurança**: Dados sensíveis não ficam gravados em disco
+- **Performance**: Leitura/escrita em memória é muito mais rápida
+- **Limpeza automática**: Não deixa rastros após a execução
+
+**Desvantagens do tmpfs:**
+- **Volatilidade**: Perda total de dados ao parar o container
+- **Limitação de memória**: Consome RAM do host
+- **Linux only**: Não portável para outros sistemas operacionais
+
+---
+
 #### Resumo dos conceitos principais
 
 **[Docker Hub](https://hub.docker.com/):**
@@ -760,3 +856,8 @@ ls /dados  # arquivo-importante.txt ainda está lá
 - Containers são completamente isolados do host
 - Cada container possui seu próprio sistema de arquivos
 - Modificações não afetam o host ou outros containers
+
+**Persistência de dados:**
+- **Volumes**: Solução recomendada, gerenciada pelo Docker
+- **Bind Mounts**: Vincula diretórios do host ao container
+- **tmpfs**: Armazenamento temporário em memória (Linux only)

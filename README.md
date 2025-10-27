@@ -1286,7 +1286,7 @@ sudo snap install docker-compose
 
 ---
 
-### Criando seu primeiro docker-compose.yml
+### 6.3 Criando seu primeiro docker-compose.yml
 
 Vamos transformar os comandos manuais que executamos anteriormente em um arquivo Docker Compose.
 
@@ -1584,7 +1584,7 @@ networks:
 
 ---
 
-### Usando o Docker Compose
+### 6.4 Usando o Docker Compose
 
 **Executar a aplicação:**
 
@@ -1947,7 +1947,7 @@ docker top <container_id>              # Processos em execução no container
 
 ---
 
-## Recursos adicionais
+### 7.4 Recursos adicionais
 
 **Documentação oficial:**
 - [Docker Documentation](https://docs.docker.com/) - Documentação completa
@@ -1966,7 +1966,10 @@ docker top <container_id>              # Processos em execução no container
 - [Stack Overflow - Docker](https://stackoverflow.com/questions/tagged/docker)
 - [Reddit - r/docker](https://www.reddit.com/r/docker/)
 
----
+**Recursos recomendados:**
+- [Docker Documentation](https://docs.docker.com/)
+- [Docker Hub](https://hub.docker.com/)
+- [Cursos avançados na Alura](https://www.alura.com.br/)
 
 <div align="center">
 

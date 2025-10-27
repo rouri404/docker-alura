@@ -15,53 +15,91 @@
 
 ## Sobre o Projeto
 
-Este repositório contém um guia completo e prático sobre **Docker**, desenvolvido durante o curso da **Alura**. O material abrange desde conceitos fundamentais até tópicos avançados como redes, volumes e Docker Compose.
+Este repositório contém um **guia completo e prático sobre Docker**, desenvolvido durante o curso da **Alura**. O material abrange desde conceitos fundamentais até tópicos avançados como redes, volumes e Docker Compose, com exemplos práticos e prontos para uso.
+
+**O que você vai aprender:**
+- Conceitos fundamentais de containers e imagens
+- Instalação e configuração do Docker
+- Gerenciamento completo do ciclo de vida de containers
+- Criação de imagens customizadas com Dockerfile
+- Persistência de dados com volumes, bind mounts e tmpfs
+- Comunicação entre containers usando redes Docker
+- Coordenação de múltiplos containers com Docker Compose
+- Boas práticas e comandos essenciais
 
 **Pré-requisitos:**
 - Sistema operacional Linux, Windows ou macOS
 - Conhecimentos básicos de terminal/linha de comando
-- Docker instalado (guia de instalação incluído)
+- Docker instalado (guia de instalação incluído no material)
 
 ---
 
 ## Índice
 
-### Fundamentos
-- [Conceitos fundamentais](#conceitos-fundamentais)
-- [Gerenciando imagens Docker](#gerenciando-imagens-docker)
-- [Instalação do Docker](#instalação-do-docker)
+### 1. Fundamentos
+- [1.1 Conceitos fundamentais](#conceitos-fundamentais)
+- [1.2 Gerenciando imagens Docker](#gerenciando-imagens-docker)
+- [1.3 Instalação do Docker](#instalação-do-docker)
 
-### Trabalhando com Containers
-- [Ciclo de vida dos containers](#ciclo-de-vida-dos-containers)
-- [Mapeamento de portas](#mapeamento-de-portas)
+### 2. Trabalhando com Containers
+- [2.1 Ciclo de vida dos containers](#ciclo-de-vida-dos-containers)
+- [2.2 Mapeamento de portas](#mapeamento-de-portas)
 
-### Imagens Customizadas
-- [Criando suas próprias imagens](#criando-suas-próprias-imagens-docker)
-- [Enviando imagens para o Docker Hub](#enviando-imagens-para-o-docker-hub)
+### 3. Criando Imagens Customizadas
+- [3.1 Criando suas próprias imagens](#criando-suas-próprias-imagens-docker)
+- [3.2 Enviando imagens para o Docker Hub](#enviando-imagens-para-o-docker-hub)
 
-### Persistência de Dados
-- [Introdução à persistência](#persistência-de-dados)
-- [Bind Mounts](#bind-mounts-persistindo-dados-com-diretórios-do-host)
-- [Volumes](#volumes-armazenamento-gerenciado-pelo-docker)
-- [tmpfs](#tmpfs-armazenamento-temporário-em-memória)
+### 4. Persistência de Dados
+- [4.1 Introdução à persistência](#persistência-de-dados)
+- [4.2 Bind Mounts](#bind-mounts-persistindo-dados-com-diretórios-do-host)
+- [4.3 Volumes](#volumes-armazenamento-gerenciado-pelo-docker)
+- [4.4 tmpfs](#tmpfs-armazenamento-temporário-em-memória)
 
-### Redes e Comunicação
-- [Redes Docker](#redes-docker-comunicação-entre-containers)
-- [Exemplo prático: Aplicação + Banco de dados](#comunicação-entre-containers-na-prática-aplicação--banco-de-dados)
+### 5. Redes e Comunicação
+- [5.1 Redes Docker](#redes-docker-comunicação-entre-containers)
+- [5.2 Comunicação na prática: Aplicação + Banco](#comunicação-entre-containers-na-prática-aplicação--banco-de-dados)
 
-### Docker Compose
-- [Introdução ao Docker Compose](#docker-compose-coordenando-múltiplos-containers)
-- [Instalando o Docker Compose](#instalando-o-docker-compose)
+### 6. Docker Compose
+- [6.1 Introdução ao Docker Compose](#docker-compose-coordenando-múltiplos-containers)
+- [6.2 Instalando o Docker Compose](#instalando-o-docker-compose)
+- [6.3 Criando seu primeiro docker-compose.yml](#criando-seu-primeiro-docker-composeyml)
+- [6.4 Usando o Docker Compose](#usando-o-docker-compose)
 
-### Referência
-- [Resumo dos conceitos](#resumo-dos-conceitos-principais)
-- [Boas práticas](#boas-práticas-gerais)
-- [Referência rápida de comandos](#referência-rápida-de-comandos)
-- [Recursos adicionais](#recursos-adicionais)
+### 7. Referência e Recursos
+- [7.1 Resumo dos conceitos](#resumo-dos-conceitos-principais)
+- [7.2 Boas práticas gerais](#boas-práticas-gerais)
+- [7.3 Referência rápida de comandos](#referência-rápida-de-comandos)
+- [7.4 Recursos adicionais](#recursos-adicionais)
 
 ---
 
-## Conceitos fundamentais
+## Sumário Executivo
+
+Este guia está organizado em **7 módulos progressivos**, do básico ao avançado:
+
+| Módulo | Tópico | Descrição |
+|--------|--------|-----------|
+| **1** | **Fundamentos** | Conceitos básicos, imagens e instalação |
+| **2** | **Containers** | Ciclo de vida e mapeamento de portas |
+| **3** | **Imagens** | Criação de imagens e publicação no Docker Hub |
+| **4** | **Persistência** | Volumes, bind mounts e tmpfs |
+| **5** | **Redes** | Comunicação entre containers |
+| **6** | **Compose** | Orquestração de múltiplos containers |
+| **7** | **Referência** | Comandos, boas práticas e recursos |
+
+**Tempo estimado:** 8-12 horas de estudo
+
+**Nível:** Iniciante a Intermediário
+
+---
+
+# Conteúdo do Guia
+
+---
+
+## 1. Fundamentos
+
+### 1.1 Conceitos fundamentais
 
 **[Docker Hub](https://hub.docker.com/):**
 - Repositório central de imagens Docker
@@ -1131,6 +1169,644 @@ docker run -d --network host aluradocker/app-node:1.0
 
 ---
 
+## Docker Compose: coordenando múltiplos containers
+
+### O problema da abordagem manual
+
+Quando trabalhamos com múltiplos containers, a abordagem manual apresenta diversos desafios:
+
+```bash
+# Precisamos executar cada container manualmente
+docker run -d --network minha-bridge --name meu-mongo mongo:4.4.6
+docker run -d --network minha-bridge --name alurabooks -p 3000:3000 aluradocker/alura-books:1.0
+
+# Para parar, precisamos parar cada um individualmente
+docker stop meu-mongo
+docker stop alurabooks
+
+# Para remover, o mesmo processo
+docker rm meu-mongo
+docker rm alurabooks
+```
+
+**Problemas:**
+- Comandos longos e complexos
+- Ordem de execução deve ser respeitada manualmente
+- Difícil de gerenciar quando a aplicação cresce
+- Propenso a erros (esquecer parâmetros, nomes, portas)
+- Não é escalável para ambientes com muitos containers
+- Difícil de compartilhar configurações com a equipe
+
+### A solução: Docker Compose
+
+Docker Compose é uma ferramenta de **coordenação de containers** (diferente de orquestração) que permite:
+- Definir múltiplos containers em um único arquivo YAML
+- Gerenciar todo o ambiente com comandos simples
+- Garantir ordem de inicialização e dependências
+- Facilitar compartilhamento de configurações
+- Versionar a infraestrutura junto com o código
+
+**Coordenação vs Orquestração:**
+- **Coordenação (Compose)**: Gerencia containers em um único host
+- **Orquestração (Kubernetes, Swarm)**: Gerencia containers em múltiplos hosts/clusters
+
+**Como funciona:**
+- Arquivo `docker-compose.yml` define toda a configuração
+- Versão do Compose, serviços, redes, volumes
+- Estrutura baseada em indentação (YAML)
+- Um único comando para subir/parar toda a aplicação
+
+---
+
+### Instalando o Docker Compose
+
+**No Windows:**
+- Docker Compose já vem instalado com o Docker Desktop
+- Não é necessário instalação adicional
+- Teste: `docker-compose --version`
+
+**No Linux:**
+
+**Verificar se já está instalado:**
+```bash
+docker-compose --version
+# Se não estiver instalado, o comando não será reconhecido
+```
+
+**Instalação via documentação oficial:**
+
+**Passo 1: Baixar o binário**
+```bash
+# Baixar a versão mais recente (substitua pela versão atual se necessário)
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+
+**Passo 2: Tornar executável**
+```bash
+# Dar permissão de execução
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+**Passo 3: Verificar instalação**
+```bash
+# Abrir novo terminal e testar
+docker-compose --version
+# Saída esperada: docker-compose version 1.29.2, build...
+```
+
+**Comandos básicos do Docker Compose:**
+```bash
+docker-compose --version              # Verifica versão instalada
+docker-compose --help                 # Lista todos os comandos disponíveis
+docker-compose up                     # Sobe todos os containers
+docker-compose up -d                  # Sobe em background (detached)
+docker-compose down                   # Para e remove todos os containers
+docker-compose ps                     # Lista containers do compose
+docker-compose logs                   # Mostra logs de todos os containers
+docker-compose logs -f                # Segue os logs em tempo real
+docker-compose stop                   # Para containers sem removê-los
+docker-compose start                  # Inicia containers parados
+docker-compose restart                # Reinicia todos os containers
+```
+
+**Instalação alternativa (não recomendada):**
+```bash
+# Via apt (pode instalar versão desatualizada)
+sudo apt install docker-compose
+
+# Via snap
+sudo snap install docker-compose
+```
+
+> **Recomendação:** Sempre use a instalação via documentação oficial para obter a versão mais recente e estável.
+
+**Links úteis:**
+- [Documentação oficial - Install Docker Compose](https://docs.docker.com/compose/install/)
+- [Releases do Docker Compose no GitHub](https://github.com/docker/compose/releases)
+
+---
+
+### Criando seu primeiro docker-compose.yml
+
+Vamos transformar os comandos manuais que executamos anteriormente em um arquivo Docker Compose.
+
+**Comandos que vamos transformar:**
+```bash
+# Comando 1: MongoDB
+docker run -d --network minha-bridge --name meu-mongo mongo:4.4.6
+
+# Comando 2: Alura Books
+docker run -d --network minha-bridge --name alurabooks -p 3000:3000 aluradocker/alura-books:1.0
+```
+
+**Passo 1: Preparar o ambiente**
+
+```bash
+# Criar diretório para o projeto
+mkdir -p ~/Desktop/ymls
+cd ~/Desktop/ymls
+
+# Abrir no editor (VS Code, vim, nano, etc.)
+code .
+```
+
+**Passo 2: Criar o arquivo docker-compose.yml**
+
+Crie um arquivo chamado `docker-compose.yml` no diretório do projeto.
+
+**Passo 3: Definir a versão**
+
+Primeiro, definimos a versão do Docker Compose que utilizaremos:
+
+```yaml
+version: "3.9"
+```
+
+> **Nota:** A versão 3.9 é compatível com Docker Engine 19.03.0+
+
+**Passo 4: Definir os serviços**
+
+Agora vamos definir nossos dois serviços: MongoDB e Alura Books.
+
+**Serviço 1: MongoDB**
+
+```yaml
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:4.4.6
+    container_name: meu-mongo
+    networks:
+      - compose-bridge
+```
+
+**Explicação:**
+- `mongodb`: Nome do serviço (pode ser qualquer nome)
+- `image`: Imagem Docker a ser utilizada
+- `container_name`: Nome fixo do container
+- `networks`: Rede à qual o container será conectado
+
+**Serviço 2: Alura Books**
+
+```yaml
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:4.4.6
+    container_name: meu-mongo
+    networks:
+      - compose-bridge
+  
+  alurabooks:
+    image: aluradocker/alura-books:1.0
+    container_name: alurabooks
+    networks:
+      - compose-bridge
+    ports:
+      - 3000:3000
+```
+
+**Explicação adicional:**
+- `ports`: Mapeamento de portas (host:container)
+- `3000:3000`: Porta 3000 do container acessível na porta 3000 do host
+
+**Passo 5: Definir a rede**
+
+Por fim, precisamos criar a rede que será utilizada pelos containers:
+
+**Arquivo completo: docker-compose.yml**
+
+Crie um arquivo chamado `docker-compose.yml` com o seguinte conteúdo:
+
+```yaml
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:4.4.6
+    container_name: meu-mongo
+    networks:
+      - compose-bridge
+
+  alurabooks:
+    image: aluradocker/alura-books:1.0
+    container_name: alurabooks
+    ports:
+      - 3000:3000
+    networks:
+      - compose-bridge
+    depends_on:
+      - mongodb
+
+networks:
+  compose-bridge:
+    driver: bridge
+```
+
+**Executando o Docker Compose:**
+
+```bash
+# No diretório onde está o docker-compose.yml
+docker-compose up
+
+# Saída esperada:
+# Creating network "ymls_compose-bridge" with driver "bridge"
+# Creating meu-mongo ... done
+# Creating alurabooks ... done
+# Attaching to meu-mongo, alurabooks
+# ... (logs dos containers)
+```
+
+**Testando a aplicação:**
+
+```bash
+# Abrir no navegador
+# http://localhost:3000
+
+# Popular o banco de dados
+# http://localhost:3000/seed
+
+# Atualizar a página - dados aparecem!
+```
+
+**Parando a aplicação:**
+
+```bash
+# No terminal onde o docker-compose está rodando
+# Pressionar Ctrl + C
+
+# Os containers serão parados automaticamente
+# Stopping alurabooks ... done
+# Stopping meu-mongo ... done
+```
+
+**Otimizando com depends_on:**
+
+Quando executamos `docker-compose up`, os serviços são iniciados de forma indefinida, o que pode causar logs misturados. Podemos melhorar isso definindo dependências entre serviços.
+
+**Problema:** Logs misturados e ordem de inicialização não controlada
+
+**Solução:** Usar `depends_on` para expressar dependência entre serviços
+
+Atualize o arquivo `docker-compose.yml`:
+
+```yaml
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:4.4.6
+    container_name: meu-mongo
+    networks:
+      - compose-bridge
+
+  alurabooks:
+    image: aluradocker/alura-books:1.0
+    container_name: alurabooks
+    networks:
+      - compose-bridge
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongodb
+
+networks:
+  compose-bridge:
+    driver: bridge
+```
+
+**O que o depends_on faz:**
+- Define ordem de inicialização dos serviços
+- MongoDB será iniciado **antes** do Alura Books
+- Reduz logs misturados no terminal
+- Melhora organização da saída
+
+**Importante sobre depends_on:**
+> O `depends_on` aguarda apenas que o **container** esteja pronto, não que a **aplicação** dentro do container esteja preparada para receber requisições. Para garantir que a aplicação esteja pronta, são necessárias outras estratégias (health checks, wait-for scripts, etc.).
+
+**Executando em modo detached:**
+
+```bash
+# Executar em background (não trava o terminal)
+docker-compose up -d
+
+# Saída:
+# Creating network "ymls_compose-bridge" with driver "bridge"
+# Creating meu-mongo ... done
+# Creating alurabooks ... done
+```
+
+**Verificando status dos serviços:**
+
+```bash
+# Listar serviços gerenciados pelo Compose
+docker-compose ps
+
+# Saída organizada:
+#     Name                   Command               State           Ports
+# --------------------------------------------------------------------------------
+# alurabooks      docker-entrypoint.sh node ...   Up      0.0.0.0:3000->3000/tcp
+# meu-mongo       docker-entrypoint.sh mongod     Up      27017/tcp
+```
+
+**Parando e removendo tudo:**
+
+```bash
+# Para e remove containers, redes e volumes
+docker-compose down
+
+# Saída:
+# Stopping alurabooks ... done
+# Stopping meu-mongo ... done
+# Removing alurabooks ... done
+# Removing meu-mongo ... done
+# Removing network ymls_compose-bridge
+```
+
+**Explicação de cada seção:**
+
+**1. Version:**
+```yaml
+version: '3.8'
+```
+- Define a versão do formato do Docker Compose
+- Versão 3.8 é compatível com Docker Engine 19.03.0+
+- Cada versão suporta diferentes recursos
+
+**2. Services (Serviços):**
+```yaml
+services:
+  mongodb:                      # Nome do serviço
+    image: mongo:4.4.6          # Imagem a ser utilizada
+    container_name: meu-mongo   # Nome do container
+```
+- Cada serviço representa um container
+- `image`: Especifica qual imagem usar
+- `container_name`: Nome fixo do container (opcional)
+
+**3. Ports (Portas):**
+```yaml
+ports:
+  - "3000:3000"  # host:container
+```
+- Mapeia portas do host para o container
+- Formato: `"porta-host:porta-container"`
+- Apenas necessário para serviços que precisam ser acessados externamente
+
+**4. Networks (Redes):**
+```yaml
+networks:
+  - minha-bridge  # Container conectado a esta rede
+```
+- Define em quais redes o container estará
+- Permite comunicação entre containers
+
+**5. Depends_on (Dependências):**
+```yaml
+depends_on:
+  - mongodb  # Aguarda o MongoDB iniciar primeiro
+```
+- Define ordem de inicialização
+- Container só inicia após as dependências
+- **Importante**: Não garante que o serviço esteja pronto, apenas que o container iniciou
+
+**6. Networks (Definição de redes):**
+```yaml
+networks:
+  minha-bridge:
+    driver: bridge
+```
+- Define as redes que serão criadas
+- `driver: bridge` cria uma rede bridge customizada
+- Permite resolução DNS automática entre containers
+
+---
+
+### Usando o Docker Compose
+
+**Executar a aplicação:**
+
+```bash
+# No diretório onde está o docker-compose.yml
+docker-compose up
+
+# Executar em background (detached)
+docker-compose up -d
+
+# Ver logs em tempo real
+docker-compose logs -f
+
+# Ver logs de um serviço específico
+docker-compose logs -f alurabooks
+```
+
+**Parar a aplicação:**
+
+```bash
+# Para e remove containers, redes
+docker-compose down
+
+# Para sem remover
+docker-compose stop
+
+# Reiniciar
+docker-compose restart
+```
+
+**Verificar status:**
+
+```bash
+# Listar containers do compose
+docker-compose ps
+
+# Ver processos em execução
+docker-compose top
+```
+
+**Comparação: Manual vs Docker Compose**
+
+| Aspecto | Manual | Docker Compose |
+|---------|--------|----------------|
+| **Comandos** | Múltiplos comandos longos | Um único comando |
+| **Ordem** | Manual | Automática (depends_on) |
+| **Configuração** | Linha de comando | Arquivo versionável |
+| **Compartilhamento** | Difícil | Fácil (arquivo YAML) |
+| **Manutenção** | Propensa a erros | Consistente |
+| **Escalabilidade** | Complexa | Simples |
+
+**Exemplo prático completo:**
+
+```bash
+# 1. Criar o arquivo docker-compose.yml (conteúdo acima)
+
+# 2. Subir a aplicação
+docker-compose up -d
+
+# 3. Verificar containers
+docker-compose ps
+
+# 4. Acessar no navegador
+# http://localhost:3000
+
+# 5. Popular o banco
+# http://localhost:3000/seed
+
+# 6. Ver logs
+docker-compose logs -f
+
+# 7. Parar tudo
+docker-compose down
+```
+
+**Vantagens do Docker Compose:**
+
+- **Simplicidade**: Um comando para gerenciar tudo
+- **Reprodutibilidade**: Mesmo ambiente em qualquer máquina
+- **Versionamento**: Arquivo pode ser versionado no Git
+- **Documentação**: O arquivo serve como documentação da infraestrutura
+- **Desenvolvimento**: Facilita onboarding de novos desenvolvedores
+- **Consistência**: Elimina erros de configuração manual
+
+**Recursos avançados do docker-compose.yml:**
+
+Além das configurações básicas, o Docker Compose suporta diversos recursos avançados:
+
+**1. Volumes para persistência:**
+
+```yaml
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:4.4.6
+    container_name: meu-mongo
+    volumes:
+      - mongodb-data:/data/db    # Volume nomeado
+    networks:
+      - compose-bridge
+
+volumes:
+  mongodb-data:                   # Definição do volume
+```
+
+**2. Variáveis de ambiente:**
+
+```yaml
+services:
+  mongodb:
+    image: mongo:4.4.6
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: senha123
+```
+
+**3. Restart policies:**
+
+```yaml
+services:
+  mongodb:
+    image: mongo:4.4.6
+    restart: always              # Reinicia automaticamente em caso de falha
+    # Opções: no, always, on-failure, unless-stopped
+```
+
+**Exemplo completo com recursos avançados:**
+
+```yaml
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:4.4.6
+    container_name: meu-mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: senha123
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - compose-bridge
+
+  alurabooks:
+    image: aluradocker/alura-books:1.0
+    container_name: alurabooks
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      MONGO_URL: mongodb://admin:senha123@mongodb:27017
+    networks:
+      - compose-bridge
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb-data:
+
+networks:
+  compose-bridge:
+    driver: bridge
+```
+
+**Configurações de deploy (Docker Swarm):**
+
+A seção `deploy` permite configurações avançadas como réplicas e paralelismo:
+
+```yaml
+services:
+  alurabooks:
+    image: aluradocker/alura-books:1.0
+    deploy:
+      replicas: 3                # Número de réplicas do serviço
+      update_config:
+        parallelism: 2           # Atualiza 2 containers por vez
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+```
+
+**Importante sobre deploy:**
+> As configurações da seção `deploy` **somente funcionam** quando o Docker está em modo **Swarm**, usando o comando `docker stack deploy`. Elas **não funcionam** com `docker-compose up` em modo standalone.
+
+**Para usar deploy:**
+```bash
+# Inicializar Swarm
+docker swarm init
+
+# Deploy usando stack
+docker stack deploy -c docker-compose.yml minha-stack
+
+# Listar serviços
+docker stack services minha-stack
+```
+
+**Comandos adicionais úteis:**
+
+```bash
+# Reconstruir imagens
+docker-compose build
+
+# Subir e reconstruir
+docker-compose up --build
+
+# Escalar serviços (múltiplas instâncias)
+docker-compose up --scale alurabooks=3
+
+# Executar comando em serviço
+docker-compose exec alurabooks bash
+
+# Remover volumes também
+docker-compose down -v
+
+# Ver configuração processada
+docker-compose config
+```
+
+---
+
 ## Resumo dos conceitos principais
 
 **[Docker Hub](https://hub.docker.com/):**
@@ -1292,32 +1968,8 @@ docker top <container_id>              # Processos em execução no container
 
 ---
 
-## Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-## Autor
-
-**Gabriel**
-- GitHub: [@rouri404](https://github.com/rouri404)
-- Docker Hub: [gabricoto](https://hub.docker.com/u/gabricoto)
-
----
-
-## Agradecimentos
-
-- [Alura](https://www.alura.com.br/) - Pela excelente plataforma de ensino
-- Comunidade Docker - Pela documentação e suporte
-- Todos que contribuíram com feedback e melhorias
-
----
-
 <div align="center">
 
 **[⬆ Voltar ao topo](#docker-criando-e-gerenciando-containers)**
-
-Feito por [Gabriel](https://github.com/rouri404)
 
 </div>
